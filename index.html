@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Next Analyticx — Turn Your Data Into Decisions</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #060910;
+    --surface: #0d1117;
+    --border: #1c2333;
+    --accent: #00d4ff;
+    --accent2: #7b61ff;
+    --text: #e8edf5;
+    --muted: #6b7a99;
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* NOISE TEXTURE */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    padding: 1.5rem 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(6,9,16,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: -0.02em;
+    color: var(--white);
+  }
+
+  .logo span { color: var(--accent); }
+
+  nav ul {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  nav ul a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 400;
+    transition: color 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  nav ul a:hover { color: var(--white); }
+
+  .nav-cta {
+    background: var(--accent);
+    color: var(--bg) !important;
+    padding: 0.5rem 1.2rem;
+    border-radius: 6px;
+    font-weight: 500 !important;
+    transition: opacity 0.2s !important;
+  }
+
+  .nav-cta:hover { opacity: 0.85; color: var(--bg) !important; }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 8rem 6% 5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 800px;
+    height: 800px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(0,212,255,0.07) 0%, transparent 70%);
+    top: -200px;
+    right: -200px;
+    pointer-events: none;
+  }
+
+  .hero-glow2 {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(123,97,255,0.06) 0%, transparent 70%);
+    bottom: -100px;
+    left: -100px;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    max-width: 780px;
+    position: relative;
+    z-index: 2;
+    animation: fadeUp 0.8s ease forwards;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(0,212,255,0.08);
+    border: 1px solid rgba(0,212,255,0.2);
+    border-radius: 100px;
+    padding: 0.4rem 1rem;
+    font-size: 0.8rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.03em;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+  }
+
+  h1 .highlight {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-sub {
+    font-size: 1.15rem;
+    color: var(--muted);
+    max-width: 560px;
+    margin-bottom: 2.5rem;
+    line-height: 1.8;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: var(--bg);
+    padding: 0.85rem 2rem;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn-primary:hover {
+    background: #00bbdd;
+    transform: translateY(-1px);
+    box-shadow: 0 8px 30px rgba(0,212,255,0.25);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    padding: 0.85rem 2rem;
+    border-radius: 8px;
+    font-weight: 400;
+    font-size: 0.95rem;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* STATS */
+  .stats {
+    padding: 4rem 6%;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+  }
+
+  .stat {
+    text-align: center;
+    padding: 1.5rem;
+  }
+
+  .stat-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--white);
+    display: block;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .stat-label {
+    color: var(--muted);
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-top: 0.3rem;
+  }
+
+  /* PROBLEM SECTION */
+  .problem {
+    padding: 7rem 6%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+
+  h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--white);
+    margin-bottom: 1.5rem;
+  }
+
+  .problem-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    margin-top: 4rem;
+  }
+
+  .problem-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .problem-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    color: var(--muted);
+    font-size: 1rem;
+    padding: 1.2rem 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    transition: border-color 0.2s;
+  }
+
+  .problem-list li:hover {
+    border-color: rgba(0,212,255,0.3);
+    color: var(--text);
+  }
+
+  .problem-list li::before {
+    content: '×';
+    color: #ff4d4d;
+    font-size: 1.2rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .solution-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+  }
+
+  .solution-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    color: var(--muted);
+    font-size: 1rem;
+    padding: 1.2rem 1.5rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    transition: border-color 0.2s;
+  }
+
+  .solution-list li:hover {
+    border-color: rgba(0,212,255,0.3);
+    color: var(--text);
+  }
+
+  .solution-list li::before {
+    content: '✓';
+    color: var(--accent);
+    font-size: 1rem;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  /* SERVICES */
+  .services {
+    padding: 7rem 6%;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .services-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .services-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .service-card {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .service-card:hover {
+    border-color: rgba(0,212,255,0.25);
+    transform: translateY(-3px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  }
+
+  .service-card:hover::before { opacity: 1; }
+
+  .service-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .service-card h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.75rem;
+  }
+
+  .service-card p {
+    color: var(--muted);
+    font-size: 0.9rem;
+    line-height: 1.7;
+  }
+
+  /* STACK */
+  .stack {
+    padding: 7rem 6%;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .stack-logos {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+
+  .stack-tag {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-weight: 400;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  .stack-tag:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  /* WHO WE ARE */
+  .about {
+    padding: 7rem 6%;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+  }
+
+  .about-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+  }
+
+  .about-text p {
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+    font-size: 1rem;
+    line-height: 1.8;
+  }
+
+  .about-text p strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .about-highlights {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .highlight-item {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    padding: 1.5rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  .highlight-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 2rem;
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  .highlight-item h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 0.3rem;
+    font-size: 0.95rem;
+  }
+
+  .highlight-item p {
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  /* INDUSTRIES */
+  .industries {
+    padding: 7rem 6%;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .industries-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+
+  .industry-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.2s;
+  }
+
+  .industry-card:hover {
+    border-color: rgba(0,212,255,0.3);
+    transform: translateY(-2px);
+  }
+
+  .industry-card .icon { font-size: 1.8rem; margin-bottom: 0.75rem; display: block; }
+  .industry-card h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--white);
+  }
+
+  /* CTA */
+  .cta-section {
+    padding: 7rem 6%;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .cta-inner {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .cta-section h2 { margin-bottom: 1rem; }
+
+  .cta-section p {
+    color: var(--muted);
+    margin-bottom: 2.5rem;
+    font-size: 1.05rem;
+  }
+
+  /* FOOTER */
+  footer {
+    padding: 2.5rem 6%;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--muted);
+    font-size: 0.85rem;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .problem-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .services-grid { grid-template-columns: 1fr 1fr; }
+    .about-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .industries-grid { grid-template-columns: repeat(2, 1fr); }
+    nav ul { display: none; }
+  }
+
+  @media (max-width: 600px) {
+    .stats { grid-template-columns: 1fr 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
+    .industries-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Next<span>Analyticx</span></div>
+  <ul>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#stack">Technology</a></li>
+    <li><a href="#contact" class="nav-cta">Get Started</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Data · AI · Analytics</div>
+    <h1>Your data is talking.<br><span class="highlight">Are you listening?</span></h1>
+    <p class="hero-sub">Most businesses are sitting on a goldmine of data they can't use. We build the pipelines, dashboards, and AI systems that turn raw data into decisions that drive real growth.</p>
+    <div class="hero-actions">
+      <a href="#contact" class="btn-primary">Start a Project →</a>
+      <a href="#services" class="btn-secondary">See What We Do</a>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats">
+  <div class="stat">
+    <span class="stat-number">16+</span>
+    <div class="stat-label">Years of Experience</div>
+  </div>
+  <div class="stat">
+    <span class="stat-number">3</span>
+    <div class="stat-label">Continents Served</div>
+  </div>
+  <div class="stat">
+    <span class="stat-number">Multi</span>
+    <div class="stat-label">Cloud Certified Stack</div>
+  </div>
+  <div class="stat">
+    <span class="stat-number">100%</span>
+    <div class="stat-label">End-to-End Delivery</div>
+  </div>
+</div>
+
+<!-- PROBLEM / SOLUTION -->
+<section class="problem">
+  <div class="section-label">The Problem We Solve</div>
+  <h2>You have the data.<br>You're missing the insight.</h2>
+  <div class="problem-grid">
+    <div>
+      <p style="color: var(--muted); margin-bottom: 2rem;">Sound familiar? These are the most common challenges we hear from businesses every day.</p>
+      <ul class="problem-list">
+        <li>Data is everywhere but nobody can make sense of it</li>
+        <li>Power BI reports are slow, wrong, or nobody trusts them</li>
+        <li>You want AI but don't know where to even start</li>
+        <li>Your pipelines break and nobody knows why</li>
+        <li>You're paying for AWS or Azure but it's not set up right</li>
+        <li>Decisions are made on gut feeling, not data</li>
+      </ul>
+    </div>
+    <div>
+      <p style="color: var(--muted); margin-bottom: 2rem;">This is what life looks like after working with Next Analyticx.</p>
+      <ul class="solution-list">
+        <li>Clean, reliable data flowing through a modern pipeline</li>
+        <li>Beautiful, fast dashboards your team actually uses</li>
+        <li>AI chatbots and ML models built for your specific business</li>
+        <li>Automated pipelines that run without babysitting</li>
+        <li>Cloud infrastructure optimized for performance and cost</li>
+        <li>Real-time visibility into what's actually happening</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="services-inner">
+    <div class="services-header">
+      <div class="section-label">What We Do</div>
+      <h2>End-to-end analytics.<br>Zero hand-holding required.</h2>
+    </div>
+    <div class="services-grid">
+      <div class="service-card">
+        <span class="service-icon">📊</span>
+        <h3>Power BI & Business Intelligence</h3>
+        <p>Custom dashboards and reports that actually get used. Fast, accurate, and built for decision makers — not just data teams.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">⚙️</span>
+        <h3>ETL & Data Pipelines</h3>
+        <p>We design, build, and maintain the infrastructure that moves your data from source to insight — reliably, at scale, every time.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">☁️</span>
+        <h3>Cloud Architecture</h3>
+        <p>AWS and Azure expertise to design multi-cloud environments that are secure, cost-optimized, and built for growth.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🔷</span>
+        <h3>Microsoft Fabric & OneLake</h3>
+        <p>Cutting-edge lakehouse architecture on Microsoft Fabric. We help you migrate to and maximize the newest generation of data platforms.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🤖</span>
+        <h3>AI Integration & Chatbots</h3>
+        <p>We integrate AI into your business workflows — from intelligent chatbots to ML models that predict, automate, and optimize.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🧠</span>
+        <h3>Data Strategy Consulting</h3>
+        <p>Not sure where to start? We help you build a roadmap — from audit to architecture — so your entire organization becomes data-driven.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">⚡</span>
+        <h3>Apache Spark & Big Data</h3>
+        <p>Distributed computing for large-scale data processing. When your data outgrows traditional tools, we scale with you.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">🔄</span>
+        <h3>Pipeline Orchestration</h3>
+        <p>Airflow-based workflow automation that keeps your data moving on schedule — with monitoring, alerts, and zero surprises.</p>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">📈</span>
+        <h3>Predictive Analytics & ML</h3>
+        <p>Machine learning models tailored to your business — churn prediction, demand forecasting, anomaly detection, and more.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TECH STACK -->
+<section class="stack" id="stack">
+  <div class="section-label">Technology Stack</div>
+  <h2>We work with the tools<br>your business already uses</h2>
+  <p style="color: var(--muted); max-width: 500px; margin: 1rem auto 0;">16+ years across every major cloud and data platform — so you don't have to explain your tech environment to us.</p>
+  <div class="stack-logos">
+    <span class="stack-tag">Microsoft Fabric</span>
+    <span class="stack-tag">Power BI</span>
+    <span class="stack-tag">Amazon AWS</span>
+    <span class="stack-tag">Microsoft Azure</span>
+    <span class="stack-tag">Apache Spark</span>
+    <span class="stack-tag">Apache Airflow</span>
+    <span class="stack-tag">OneLake</span>
+    <span class="stack-tag">Databricks</span>
+    <span class="stack-tag">Snowflake</span>
+    <span class="stack-tag">dbt</span>
+    <span class="stack-tag">Python</span>
+    <span class="stack-tag">SQL</span>
+    <span class="stack-tag">Azure Data Factory</span>
+    <span class="stack-tag">AWS Glue</span>
+    <span class="stack-tag">OpenAI API</span>
+    <span class="stack-tag">Fabric Notebooks</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-inner">
+    <div class="about-text">
+      <div class="section-label">Who We Are</div>
+      <h2>Senior-level expertise.<br>Without the enterprise price tag.</h2>
+      <p>Next Analyticx is a boutique data analytics firm built by senior practitioners — not fresh graduates or generalist consultants. Every engagement is led by engineers with <strong>16+ years of hands-on experience</strong> across the full data stack.</p>
+      <p>We've designed analytics infrastructure for <strong>national-scale telecommunications companies</strong>, built data cultures from zero, applied machine learning in production, and delivered across multiple industries and continents.</p>
+      <p>We're not here to sell you software licenses or pad project timelines. We're here to <strong>solve your data problem and leave you with something that works.</strong></p>
+      <br>
+      <a href="#contact" class="btn-primary">Talk to an expert →</a>
+    </div>
+    <div class="about-highlights">
+      <div class="highlight-item">
+        <div class="highlight-num">16+</div>
+        <div>
+          <h4>Years of Real-World Experience</h4>
+          <p>Not theoretical knowledge — actual pipelines, actual dashboards, actual ML models in production.</p>
+        </div>
+      </div>
+      <div class="highlight-item">
+        <div class="highlight-num">3</div>
+        <div>
+          <h4>Continents, Multiple Industries</h4>
+          <p>From US government to telecommunications to sports technology — we've seen every kind of data challenge.</p>
+        </div>
+      </div>
+      <div class="highlight-item">
+        <div class="highlight-num">2</div>
+        <div>
+          <h4>Major Cloud Platforms</h4>
+          <p>AWS and Azure certified expertise means we work in your environment, not ours.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRIES -->
+<section class="industries">
+  <div class="section-label">Industries</div>
+  <h2>We've worked across sectors</h2>
+  <div class="industries-grid">
+    <div class="industry-card">
+      <span class="icon">🏛️</span>
+      <h4>Government</h4>
+    </div>
+    <div class="industry-card">
+      <span class="icon">📡</span>
+      <h4>Telecommunications</h4>
+    </div>
+    <div class="industry-card">
+      <span class="icon">🏈</span>
+      <h4>Sports & Education</h4>
+    </div>
+    <div class="industry-card">
+      <span class="icon">🛍️</span>
+      <h4>Retail & Optics</h4>
+    </div>
+    <div class="industry-card">
+      <span class="icon">💰</span>
+      <h4>Finance</h4>
+    </div>
+    <div class="industry-card">
+      <span class="icon">🏥</span>
+      <h4>Healthcare</h4>
+    </div>
+    <div class="industry-card">
+      <span class="icon">🏭</span>
+      <h4>Manufacturing</h4>
+    </div>
+    <div class="industry-card">
+      <span class="icon">🚀</span>
+      <h4>SaaS & Tech</h4>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-inner">
+    <div class="section-label">Get Started</div>
+    <h2>Ready to actually use your data?</h2>
+    <p>Tell us about your data challenge. We'll respond within 24 hours with a clear, honest assessment — no sales pitch, no obligation.</p>
+    <a href="mailto:contact@nextanalyticx.com" class="btn-primary" style="font-size:1rem; padding: 1rem 2.5rem;">
+      Contact Us → contact@nextanalyticx.com
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="logo" style="font-size:1.1rem;">Next<span style="color:var(--accent)">Analyticx</span></div>
+  <div>© 2025 Next Analyticx. All rights reserved.</div>
+  <div style="color: var(--muted);">Virginia, USA · Serving clients globally</div>
+</footer>
+
+</body>
+</html>
