@@ -328,15 +328,42 @@
     color: var(--text);
   }
 
-  .problem-list li::before {
-    content: '×';
-    color: #ff4d4d;
-    font-size: 1.2rem;
-    font-weight: 700;
+  .problem-list li .icon-badge,
+  .solution-list li .icon-badge {
     flex-shrink: 0;
-    margin-top: 0.1rem;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-top: 0.05rem;
   }
 
+  /* Red badge for problems */
+  .problem-list li .icon-badge {
+    background: rgba(255, 77, 77, 0.1);
+    border: 1px solid rgba(255, 77, 77, 0.25);
+    box-shadow: 0 0 12px rgba(255, 77, 77, 0.15);
+    animation: pulseBadgeRed 2.5s ease-in-out infinite;
+  }
+
+  .problem-list li .icon-badge svg {
+    width: 12px;
+    height: 12px;
+    stroke: #ff4d4d;
+    stroke-width: 2.5;
+    fill: none;
+    stroke-linecap: round;
+  }
+
+  @keyframes pulseBadgeRed {
+    0%, 100% { box-shadow: 0 0 8px rgba(255, 77, 77, 0.15); border-color: rgba(255, 77, 77, 0.25); }
+    50% { box-shadow: 0 0 18px rgba(255, 77, 77, 0.3); border-color: rgba(255, 77, 77, 0.45); }
+  }
+
+  /* Cyan badge for solutions */
   .solution-list {
     list-style: none;
     display: flex;
@@ -362,13 +389,26 @@
     color: var(--text);
   }
 
-  .solution-list li::before {
-    content: '✓';
-    color: var(--accent);
-    font-size: 1rem;
-    font-weight: 700;
-    flex-shrink: 0;
-    margin-top: 0.1rem;
+  .solution-list li .icon-badge {
+    background: rgba(0, 212, 255, 0.08);
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    box-shadow: 0 0 12px rgba(0, 212, 255, 0.12);
+    animation: pulseBadgeCyan 2.5s ease-in-out infinite;
+  }
+
+  .solution-list li .icon-badge svg {
+    width: 12px;
+    height: 12px;
+    stroke: var(--accent);
+    stroke-width: 2.5;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  @keyframes pulseBadgeCyan {
+    0%, 100% { box-shadow: 0 0 8px rgba(0, 212, 255, 0.12); border-color: rgba(0, 212, 255, 0.2); }
+    50% { box-shadow: 0 0 18px rgba(0, 212, 255, 0.28); border-color: rgba(0, 212, 255, 0.4); }
   }
 
   /* SERVICES */
@@ -424,9 +464,30 @@
   .service-card:hover::before { opacity: 1; }
 
   .service-icon {
-    font-size: 2rem;
-    margin-bottom: 1rem;
-    display: block;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.2rem;
+    background: rgba(0,212,255,0.06);
+    border: 1px solid rgba(0,212,255,0.12);
+    border-radius: 10px;
+  }
+
+  .service-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--accent);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .service-card:hover .service-icon {
+    background: rgba(0,212,255,0.1);
+    border-color: rgba(0,212,255,0.25);
   }
 
   .service-card h3 {
@@ -573,7 +634,33 @@
     transform: translateY(-2px);
   }
 
-  .industry-card .icon { font-size: 1.8rem; margin-bottom: 0.75rem; display: block; }
+  .industry-icon {
+    width: 44px;
+    height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.75rem;
+    background: rgba(0,212,255,0.06);
+    border: 1px solid rgba(0,212,255,0.12);
+    border-radius: 10px;
+  }
+
+  .industry-icon svg {
+    width: 22px;
+    height: 22px;
+    stroke: var(--accent);
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .industry-card:hover .industry-icon {
+    background: rgba(0,212,255,0.1);
+    border-color: rgba(0,212,255,0.25);
+  }
+
   .industry-card h4 {
     font-family: 'Syne', sans-serif;
     font-size: 0.9rem;
@@ -686,23 +773,23 @@
     <div>
       <p style="color: var(--muted); margin-bottom: 2rem;">Sound familiar? These are the most common challenges we hear from businesses every day.</p>
       <ul class="problem-list">
-        <li>Data is everywhere but nobody can make sense of it</li>
-        <li>Power BI reports are slow, wrong, or nobody trusts them</li>
-        <li>You want AI but don't know where to even start</li>
-        <li>Your pipelines break and nobody knows why</li>
-        <li>You're paying for AWS or Azure but it's not set up right</li>
-        <li>Decisions are made on gut feeling, not data</li>
+        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Data is everywhere but nobody can make sense of it</li>
+        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Power BI reports are slow, wrong, or nobody trusts them</li>
+        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>You want AI but don't know where to even start</li>
+        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Your pipelines break and nobody knows why</li>
+        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>You're paying for AWS or Azure but it's not set up right</li>
+        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Decisions are made on gut feeling, not data</li>
       </ul>
     </div>
     <div>
       <p style="color: var(--muted); margin-bottom: 2rem;">This is what life looks like after working with Next Analyticx.</p>
       <ul class="solution-list">
-        <li>Clean, reliable data flowing through a modern pipeline</li>
-        <li>Beautiful, fast dashboards your team actually uses</li>
-        <li>AI chatbots and ML models built for your specific business</li>
-        <li>Automated pipelines that run without babysitting</li>
-        <li>Cloud infrastructure optimized for performance and cost</li>
-        <li>Real-time visibility into what's actually happening</li>
+        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Clean, reliable data flowing through a modern pipeline</li>
+        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Beautiful, fast dashboards your team actually uses</li>
+        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>AI chatbots and ML models built for your specific business</li>
+        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Automated pipelines that run without babysitting</li>
+        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Cloud infrastructure optimized for performance and cost</li>
+        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Real-time visibility into what's actually happening</li>
       </ul>
     </div>
   </div>
@@ -716,51 +803,88 @@
       <h2>End-to-end analytics.<br>Zero hand-holding required.</h2>
     </div>
     <div class="services-grid">
+
+      <!-- Power BI -->
       <div class="service-card">
-        <span class="service-icon">📊</span>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg>
+        </div>
         <h3>Power BI & Business Intelligence</h3>
         <p>Custom dashboards and reports that actually get used. Fast, accurate, and built for decision makers — not just data teams.</p>
       </div>
+
+      <!-- ETL -->
       <div class="service-card">
-        <span class="service-icon">⚙️</span>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="2"/><circle cx="19" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><path d="M7 12h4l2-6h4"/><path d="M13 12h0l2 6h2"/></svg>
+        </div>
         <h3>ETL & Data Pipelines</h3>
         <p>We design, build, and maintain the infrastructure that moves your data from source to insight — reliably, at scale, every time.</p>
       </div>
+
+      <!-- Cloud -->
       <div class="service-card">
-        <span class="service-icon">☁️</span>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M18 10a4 4 0 0 0-7.46-2A6 6 0 0 0 6 14a5 5 0 0 0 .42 9.98h11.16A4.5 4.5 0 1 0 18 10z"/></svg>
+        </div>
         <h3>Cloud Architecture</h3>
         <p>AWS and Azure expertise to design multi-cloud environments that are secure, cost-optimized, and built for growth.</p>
       </div>
+
+      <!-- Fabric -->
       <div class="service-card">
-        <span class="service-icon">🔷</span>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
         <h3>Microsoft Fabric & OneLake</h3>
         <p>Cutting-edge lakehouse architecture on Microsoft Fabric. We help you migrate to and maximize the newest generation of data platforms.</p>
       </div>
+
+      <!-- AI -->
       <div class="service-card">
-        <span class="service-icon">🤖</span>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M12 2a4 4 0 0 1 4 4c0 1.1-.9 2-2 2h-4a2 2 0 0 1-2-2 4 4 0 0 1 4-4z"/><path d="M8 8v2a4 4 0 0 0 8 0V8"/><path d="M12 14v4"/><path d="M8 22h8"/><circle cx="7" cy="5" r="1"/><circle cx="17" cy="5" r="1"/><path d="M5 5H3"/><path d="M21 5h-2"/></svg>
+        </div>
         <h3>AI Integration & Chatbots</h3>
         <p>We integrate AI into your business workflows — from intelligent chatbots to ML models that predict, automate, and optimize.</p>
       </div>
+
+      <!-- Strategy -->
       <div class="service-card">
-        <span class="service-icon">🧠</span>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        </div>
         <h3>Data Strategy Consulting</h3>
         <p>Not sure where to start? We help you build a roadmap — from audit to architecture — so your entire organization becomes data-driven.</p>
       </div>
+
+      <!-- Spark -->
       <div class="service-card">
-        <span class="service-icon">⚡</span>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
         <h3>Apache Spark & Big Data</h3>
         <p>Distributed computing for large-scale data processing. When your data outgrows traditional tools, we scale with you.</p>
       </div>
+
+      <!-- Orchestration -->
       <div class="service-card">
-        <span class="service-icon">🔄</span>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10"/><path d="M20.49 15a9 9 0 0 1-14.85 3.36L1 14"/></svg>
+        </div>
         <h3>Pipeline Orchestration</h3>
         <p>Airflow-based workflow automation that keeps your data moving on schedule — with monitoring, alerts, and zero surprises.</p>
       </div>
+
+      <!-- Predictive -->
       <div class="service-card">
-        <span class="service-icon">📈</span>
+        <div class="service-icon">
+          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
         <h3>Predictive Analytics & ML</h3>
         <p>Machine learning models tailored to your business — churn prediction, demand forecasting, anomaly detection, and more.</p>
       </div>
+
     </div>
   </div>
 </section>
@@ -833,38 +957,63 @@
   <div class="section-label">Industries</div>
   <h2>We've worked across sectors</h2>
   <div class="industries-grid">
+
     <div class="industry-card">
-      <span class="icon">🏛️</span>
+      <div class="industry-icon">
+        <svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9h1"/><path d="M9 13h1"/><path d="M9 17h1"/></svg>
+      </div>
       <h4>Government</h4>
     </div>
+
     <div class="industry-card">
-      <span class="icon">📡</span>
+      <div class="industry-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 2v8"/><path d="M4.93 10.93l1.41 1.41"/><path d="M2 18h2"/><path d="M20 18h2"/><path d="M19.07 10.93l-1.41 1.41"/><path d="M22 22H2"/><path d="M16 18a4 4 0 0 0-8 0"/></svg>
+      </div>
       <h4>Telecommunications</h4>
     </div>
+
     <div class="industry-card">
-      <span class="icon">🏈</span>
+      <div class="industry-icon">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/><path d="M8 21.2A9 9 0 0 1 3.8 16"/><path d="M20.2 16A9 9 0 0 1 16 21.2"/></svg>
+      </div>
       <h4>Sports & Education</h4>
     </div>
+
     <div class="industry-card">
-      <span class="icon">🛍️</span>
+      <div class="industry-icon">
+        <svg viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      </div>
       <h4>Retail & Optics</h4>
     </div>
+
     <div class="industry-card">
-      <span class="icon">💰</span>
+      <div class="industry-icon">
+        <svg viewBox="0 0 24 24"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      </div>
       <h4>Finance</h4>
     </div>
+
     <div class="industry-card">
-      <span class="icon">🏥</span>
+      <div class="industry-icon">
+        <svg viewBox="0 0 24 24"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+      </div>
       <h4>Healthcare</h4>
     </div>
+
     <div class="industry-card">
-      <span class="icon">🏭</span>
+      <div class="industry-icon">
+        <svg viewBox="0 0 24 24"><path d="M2 20a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-7-6H4a2 2 0 0 0-2 2v16z"/><path d="M14 2v6h6"/><path d="M12 18v-6"/><path d="M9 15h6"/></svg>
+      </div>
       <h4>Manufacturing</h4>
     </div>
+
     <div class="industry-card">
-      <span class="icon">🚀</span>
+      <div class="industry-icon">
+        <svg viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/><path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/><path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/></svg>
+      </div>
       <h4>SaaS & Tech</h4>
     </div>
+
   </div>
 </section>
 
@@ -874,8 +1023,8 @@
     <div class="section-label">Get Started</div>
     <h2>Ready to actually use your data?</h2>
     <p>Tell us about your data challenge. We'll respond within 24 hours with a clear, honest assessment — no sales pitch, no obligation.</p>
-    <a href="mailto:contact@nextanalyticx.com" class="btn-primary" style="font-size:1rem; padding: 1rem 2.5rem;">
-      Contact Us → contact@nextanalyticx.com
+    <a href="/cdn-cgi/l/email-protection#c2a1adacb6a3a1b682aca7bab6a3aca3aebbb6aba1baeca1adaf" class="btn-primary" style="font-size:1rem; padding: 1rem 2.5rem;">
+      Contact Us → <span class="__cf_email__" data-cfemail="197a76776d787a6d59777c616d78777875606d707a61377a7674">[email&#160;protected]</span>
     </a>
   </div>
 </section>
@@ -883,9 +1032,4 @@
 <!-- FOOTER -->
 <footer>
   <div class="logo" style="font-size:1.1rem;">Next<span style="color:var(--accent)">Analyticx</span></div>
-  <div>© 2025 Next Analyticx. All rights reserved.</div>
-  <div style="color: var(--muted);">Virginia, USA · Serving clients globally</div>
-</footer>
-
-</body>
-</html>
+  <div>© 2025 Next An
