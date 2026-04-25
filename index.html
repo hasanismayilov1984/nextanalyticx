@@ -4,39 +4,60 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Next Analyticx — Microsoft Fabric, Power BI & AI Solutions</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    /* Light Linear/Stripe-inspired palette */
-    --bg: #FAFBFC;            /* soft off-white */
-    --bg-alt: #F4F6FA;        /* alternate bands */
-    --surface: #FFFFFF;       /* card surface */
-    --surface-tint: #F8FAFC;  /* hover surface */
+    /* Background palette — soft, calm, professional */
+    --bg: #FAFBFC;
+    --bg-alt: #F2F8F5;            /* very light Fabric-tinted band */
+    --bg-tint-fabric: #E8F5EE;    /* light fabric teal wash for nav/header strip */
+    --surface: #FFFFFF;
+    --surface-tint: #F8FAFC;
 
-    --border: #E5E9F0;        /* subtle border */
+    --border: #E5E9F0;
     --border-strong: #D4DAE5;
 
     /* Text */
-    --text: #0A2540;          /* deep navy — primary */
-    --text-2: #425466;        /* secondary readable */
-    --muted: #697386;         /* muted but readable */
+    --text: #0A2540;
+    --text-2: #425466;
+    --muted: #697386;
+    --subhead: #1D9E75;           /* used for sub-headers/section dividers */
 
-    /* Accents */
-    --accent: #06B6D4;        /* bright cyan */
-    --accent-deep: #0891B2;   /* hover state */
-    --accent-2: #6366F1;      /* indigo gradient partner */
-    --accent-soft: #ECFEFF;   /* very light cyan */
-    --accent-tint: rgba(6,182,212,0.10);
+    /* === BRAND COLOR SYSTEM (3 Microsoft product colors, light shades) === */
+    /* Fabric teal — PRIMARY */
+    --fabric-50:  #E8F5EE;
+    --fabric-100: #C8EAD8;
+    --fabric-300: #5DCAA5;
+    --fabric-500: #1D9E75;        /* solid usable */
+    --fabric-700: #0F6E56;        /* deep for hover */
 
-    --danger: #EF4444;
-    --danger-soft: #FEF2F2;
-    --success: #10B981;
-    --success-soft: #ECFDF5;
+    /* Power BI yellow — SUPPORTING */
+    --pbi-50:  #FFF8E5;
+    --pbi-100: #FAEEDA;
+    --pbi-300: #FAC775;
+    --pbi-500: #EF9F27;
+    --pbi-700: #BA7517;
 
-    --shadow-sm: 0 1px 2px rgba(15,23,42,0.04);
-    --shadow-md: 0 4px 12px rgba(15,23,42,0.06);
-    --shadow-lg: 0 12px 32px rgba(15,23,42,0.08);
-    --shadow-xl: 0 24px 48px rgba(15,23,42,0.10);
+    /* OneLake / Azure blue — SUPPORTING */
+    --azure-50:  #EAF3FB;
+    --azure-100: #B5D4F4;
+    --azure-300: #85B7EB;
+    --azure-500: #378ADD;
+    --azure-700: #185FA5;
+
+    /* Semantic */
+    --danger: #E24B4A;
+    --danger-soft: #FCEBEB;
+    --success: #1D9E75;           /* re-uses Fabric */
+    --success-soft: #E8F5EE;
+
+    --shadow-sm: 0 1px 2px rgba(15,23,42,0.05);
+    --shadow-md: 0 4px 14px rgba(15,23,42,0.07);
+    --shadow-lg: 0 14px 36px rgba(15,23,42,0.10);
+    --shadow-xl: 0 28px 56px rgba(15,23,42,0.12);
+
+    /* Brand gradient (used sparingly) */
+    --grad-brand: linear-gradient(90deg, var(--fabric-500), var(--azure-500));
+    --grad-soft:  linear-gradient(90deg, var(--fabric-300), var(--pbi-300), var(--azure-300));
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -45,7 +66,7 @@
   body {
     background: var(--bg);
     color: var(--text);
-    font-family: 'Inter', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-weight: 400;
     font-size: 1rem;
     line-height: 1.6;
@@ -54,52 +75,149 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* === NAV === */
+  /* === NAV — light Fabric tint, pill links === */
   nav {
     position: fixed; top: 0; left: 0; right: 0;
     z-index: 100;
-    padding: 1rem 6%;
+    padding: 0.75rem 6%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background: rgba(250,251,252,0.85);
+    background: rgba(232, 245, 238, 0.85); /* fabric-50 with transparency */
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--fabric-100);
   }
 
-  .logo {
-    font-family: 'Syne', sans-serif;
-    font-weight: 800;
-    font-size: 1.3rem;
-    letter-spacing: -0.02em;
-    color: var(--text);
+  .logo-wrap {
+    display: flex;
+    align-items: center;
+    height: 38px;
   }
-  .logo span { color: var(--accent); }
+  .logo-wrap svg {
+    height: 38px;
+    width: auto;
+  }
 
   nav ul {
     display: flex;
-    gap: 2rem;
+    gap: 0.4rem;
     list-style: none;
+    align-items: center;
   }
+
   nav ul a {
-    color: var(--text-2);
+    color: var(--text);
     text-decoration: none;
-    font-size: 0.92rem;
-    font-weight: 500;
-    transition: color 0.15s;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.15s;
+    padding: 0.5rem 1rem;
+    border-radius: 100px;          /* pill */
+    display: inline-block;
   }
-  nav ul a:hover { color: var(--text); }
+  nav ul a:hover {
+    background: white;
+    color: var(--fabric-700);
+    box-shadow: var(--shadow-sm);
+  }
 
   .nav-cta {
-    background: var(--text);
-    color: var(--bg) !important;
-    padding: 0.55rem 1.2rem;
-    border-radius: 8px;
-    font-weight: 600 !important;
-    transition: all 0.15s !important;
+    background: var(--text) !important;
+    color: white !important;
+    padding: 0.55rem 1.3rem !important;
+    border-radius: 100px !important;
+    box-shadow: var(--shadow-sm);
   }
-  .nav-cta:hover { background: var(--accent-deep); color: white !important; }
+  .nav-cta:hover {
+    background: var(--fabric-700) !important;
+    color: white !important;
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+  }
+
+  /* === LOCATION PILL (in nav) — map pin with rippling base === */
+  .nav-location {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.4rem 0.95rem 0.4rem 0.7rem;
+    background: var(--surface);
+    border: 1px solid var(--fabric-100);
+    border-radius: 100px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-2);
+    box-shadow: var(--shadow-sm);
+    margin-right: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  /* Map pin wrapper — holds the SVG pin AND the ripple base */
+  .nav-pin {
+    position: relative;
+    display: inline-flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+  }
+  .nav-pin-svg {
+    width: 16px;
+    height: 16px;
+    fill: var(--fabric-500);
+    stroke: var(--fabric-700);
+    stroke-width: 0.8;
+    stroke-linejoin: round;
+    position: relative;
+    z-index: 2;
+    margin-bottom: 1px;
+  }
+  /* Solid base circle directly under the pin */
+  .nav-pin::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 8px;
+    height: 3px;
+    background: var(--fabric-500);
+    border-radius: 50%;
+    z-index: 1;
+    box-shadow: 0 0 0 0 rgba(29,158,117,0.6);
+    animation: pinBaseRipple 2.5s infinite;
+  }
+  /* Outer ripple circle that expands outward from the base */
+  .nav-pin::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.5);
+    width: 14px;
+    height: 5px;
+    border: 1.5px solid var(--fabric-500);
+    border-radius: 50%;
+    opacity: 0;
+    animation: pinOuterRipple 2.5s infinite;
+  }
+  @keyframes pinBaseRipple {
+    0% { box-shadow: 0 0 0 0 rgba(29,158,117,0.55); }
+    70% { box-shadow: 0 0 0 7px rgba(29,158,117,0); }
+    100% { box-shadow: 0 0 0 0 rgba(29,158,117,0); }
+  }
+  @keyframes pinOuterRipple {
+    0% {
+      transform: translateX(-50%) scale(0.5);
+      opacity: 0.7;
+    }
+    100% {
+      transform: translateX(-50%) scale(1.7);
+      opacity: 0;
+    }
+  }
 
   /* === HERO === */
   .hero {
@@ -110,8 +228,8 @@
     display: flex;
     align-items: center;
     background:
-      radial-gradient(ellipse 800px 500px at 90% 10%, rgba(6,182,212,0.06), transparent 60%),
-      radial-gradient(ellipse 600px 400px at 10% 90%, rgba(99,102,241,0.04), transparent 60%),
+      radial-gradient(ellipse 800px 500px at 90% 10%, rgba(29,158,117,0.07), transparent 60%),
+      radial-gradient(ellipse 600px 400px at 10% 90%, rgba(55,138,221,0.05), transparent 60%),
       var(--bg);
   }
 
@@ -132,20 +250,19 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  /* The blinking badge — kept */
   .hero-badge {
     display: inline-flex;
     align-items: center;
     gap: 0.55rem;
     background: var(--surface);
-    border: 1px solid var(--border);
+    border: 1px solid var(--fabric-100);
     border-radius: 100px;
     padding: 0.45rem 1.1rem;
     font-size: 0.78rem;
     color: var(--text);
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    font-weight: 600;
+    font-weight: 700;
     margin-bottom: 1.75rem;
     box-shadow: var(--shadow-sm);
   }
@@ -153,25 +270,37 @@
     content: '';
     width: 7px; height: 7px;
     border-radius: 50%;
-    background: var(--accent);
+    background: var(--fabric-500);
     animation: pulse 2s infinite;
   }
   @keyframes pulse {
-    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(6,182,212,0.6); }
-    50% { opacity: 0.5; box-shadow: 0 0 0 6px rgba(6,182,212,0); }
+    0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(29,158,117,0.6); }
+    50% { opacity: 0.5; box-shadow: 0 0 0 6px rgba(29,158,117,0); }
   }
 
   h1 {
-    font-family: 'Syne', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: clamp(2.4rem, 4.4vw, 3.8rem);
     font-weight: 800;
-    line-height: 1.08;
-    letter-spacing: -0.03em;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
     color: var(--text);
     margin-bottom: 1.4rem;
   }
-  h1 .highlight {
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  h1 .hl-pbi {
+    background: linear-gradient(135deg, var(--pbi-500), var(--pbi-700));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  h1 .hl-fabric {
+    background: linear-gradient(135deg, var(--fabric-500), var(--fabric-700));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  h1 .hl-azure {
+    background: linear-gradient(135deg, var(--azure-500), var(--azure-700));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -195,8 +324,8 @@
     background: var(--text);
     color: white;
     padding: 0.85rem 1.75rem;
-    border-radius: 8px;
-    font-weight: 600;
+    border-radius: 100px;          /* pill */
+    font-weight: 700;
     font-size: 0.95rem;
     text-decoration: none;
     transition: all 0.15s;
@@ -206,9 +335,10 @@
     border: none;
     cursor: pointer;
     box-shadow: var(--shadow-sm);
+    font-family: Arial, Helvetica, sans-serif;
   }
   .btn-primary:hover {
-    background: var(--accent-deep);
+    background: var(--fabric-700);
     transform: translateY(-1px);
     box-shadow: var(--shadow-md);
   }
@@ -217,7 +347,7 @@
     background: var(--surface);
     color: var(--text);
     padding: 0.85rem 1.75rem;
-    border-radius: 8px;
+    border-radius: 100px;          /* pill */
     font-weight: 600;
     font-size: 0.95rem;
     text-decoration: none;
@@ -226,11 +356,11 @@
     box-shadow: var(--shadow-sm);
   }
   .btn-secondary:hover {
-    border-color: var(--text);
-    color: var(--text);
+    border-color: var(--fabric-500);
+    color: var(--fabric-700);
   }
 
-  /* === HERO VISUAL — abstract animated dashboard === */
+  /* === HERO VISUAL === */
   .hero-visual {
     position: relative;
     aspect-ratio: 5/4;
@@ -250,13 +380,11 @@
     gap: 0.85rem;
     overflow: hidden;
   }
-
-  /* Floating accent layer behind it */
   .hero-visual::before {
     content: '';
     position: absolute;
     inset: -20px -30px -10px 30px;
-    background: linear-gradient(135deg, var(--accent-tint), rgba(99,102,241,0.10));
+    background: linear-gradient(135deg, rgba(29,158,117,0.15), rgba(250,199,117,0.10), rgba(133,183,235,0.12));
     border-radius: 18px;
     z-index: -1;
     filter: blur(2px);
@@ -270,23 +398,20 @@
     border-bottom: 1px solid var(--border);
   }
   .dash-title {
-    font-family: 'Syne', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-weight: 700;
     font-size: 0.9rem;
     color: var(--text);
   }
-  .dash-dots {
-    display: flex;
-    gap: 5px;
-  }
+  .dash-dots { display: flex; gap: 5px; }
   .dash-dot {
     width: 8px; height: 8px;
     border-radius: 50%;
     background: var(--border-strong);
   }
   .dash-dot.live {
-    background: var(--accent);
-    box-shadow: 0 0 8px var(--accent);
+    background: var(--fabric-500);
+    box-shadow: 0 0 8px var(--fabric-500);
     animation: pulseDot 1.8s infinite;
   }
   @keyframes pulseDot {
@@ -302,32 +427,37 @@
   .kpi {
     background: var(--bg-alt);
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 0.7rem 0.8rem;
   }
+  .kpi.fabric { background: var(--fabric-50); border-color: var(--fabric-100); }
+  .kpi.pbi { background: var(--pbi-50); border-color: var(--pbi-100); }
+  .kpi.azure { background: var(--azure-50); border-color: var(--azure-100); }
+
   .kpi-label {
     font-size: 0.62rem;
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    font-weight: 600;
+    font-weight: 700;
   }
   .kpi-value {
-    font-family: 'Syne', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 1.15rem;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--text);
     margin-top: 0.2rem;
     line-height: 1;
   }
   .kpi-trend {
     font-size: 0.65rem;
-    font-weight: 600;
+    font-weight: 700;
     margin-top: 0.25rem;
-    color: var(--success);
+    color: var(--fabric-700);
     letter-spacing: 0.02em;
   }
-  .kpi-trend.down { color: var(--accent); }
+  .kpi.pbi .kpi-trend { color: var(--pbi-700); }
+  .kpi.azure .kpi-trend { color: var(--azure-700); }
 
   .dash-chart-row {
     display: grid;
@@ -339,7 +469,7 @@
   .chart-card {
     background: var(--bg-alt);
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 0.85rem;
     display: flex;
     flex-direction: column;
@@ -350,10 +480,9 @@
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.08em;
-    font-weight: 600;
+    font-weight: 700;
   }
 
-  /* Animated bar chart */
   .bars {
     display: flex;
     gap: 4px;
@@ -363,12 +492,14 @@
   }
   .bars .bar {
     flex: 1;
-    background: linear-gradient(180deg, var(--accent), var(--accent-2));
     border-radius: 3px 3px 0 0;
     min-height: 6px;
     transform-origin: bottom;
     animation: barRise 1.2s ease-out backwards;
   }
+  .bars .bar:nth-child(3n+1) { background: var(--fabric-500); }
+  .bars .bar:nth-child(3n+2) { background: var(--azure-500); }
+  .bars .bar:nth-child(3n+3) { background: var(--pbi-500); }
   .bars .bar:nth-child(1) { animation-delay: 0.1s; }
   .bars .bar:nth-child(2) { animation-delay: 0.18s; }
   .bars .bar:nth-child(3) { animation-delay: 0.26s; }
@@ -384,7 +515,6 @@
     to { transform: scaleY(1); opacity: 1; }
   }
 
-  /* Donut chart */
   .donut {
     flex: 1;
     display: flex;
@@ -407,26 +537,22 @@
   }
   .donut-text {
     position: absolute;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 800;
     font-size: 1.1rem;
     color: var(--text);
   }
 
-  /* Line chart strip at bottom */
   .dash-line {
     background: var(--bg-alt);
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 10px;
     padding: 0.7rem 0.85rem;
     display: flex;
     flex-direction: column;
     gap: 0.4rem;
   }
-  .line-svg {
-    width: 100%;
-    height: 38px;
-  }
+  .line-svg { width: 100%; height: 38px; }
   .line-path {
     fill: none;
     stroke: url(#lineGrad);
@@ -442,29 +568,25 @@
     opacity: 0;
     animation: fadeArea 0.8s ease-out 1.5s forwards;
   }
-  @keyframes drawLine {
-    to { stroke-dashoffset: 0; }
-  }
-  @keyframes fadeArea {
-    to { opacity: 1; }
-  }
+  @keyframes drawLine { to { stroke-dashoffset: 0; } }
+  @keyframes fadeArea { to { opacity: 1; } }
 
   /* === SECTION COMMONS === */
   .section-label {
     font-size: 0.78rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--accent-deep);
+    color: var(--fabric-700);
     margin-bottom: 0.85rem;
-    font-weight: 700;
+    font-weight: 800;
   }
 
   h2 {
-    font-family: 'Syne', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: clamp(1.85rem, 3vw, 2.6rem);
-    font-weight: 700;
-    line-height: 1.15;
-    letter-spacing: -0.025em;
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
     color: var(--text);
     margin-bottom: 1rem;
   }
@@ -487,7 +609,7 @@
     letter-spacing: 0.18em;
     text-transform: uppercase;
     margin-bottom: 1.5rem;
-    font-weight: 600;
+    font-weight: 700;
   }
   .clients-row {
     display: grid;
@@ -497,18 +619,18 @@
   .client-pill {
     padding: 0.85rem 0.75rem;
     border: 1px solid var(--border);
-    border-radius: 8px;
+    border-radius: 100px;          /* pill */
     color: var(--text-2);
     font-size: 0.85rem;
-    font-weight: 500;
+    font-weight: 600;
     text-align: center;
     background: var(--bg-alt);
     transition: all 0.15s;
   }
   .client-pill:hover {
-    border-color: var(--accent);
-    color: var(--accent-deep);
-    background: var(--accent-soft);
+    border-color: var(--fabric-500);
+    color: var(--fabric-700);
+    background: var(--fabric-50);
   }
 
   /* === STATS === */
@@ -526,26 +648,27 @@
     padding: 0.5rem;
   }
   .stat-number {
-    font-family: 'Syne', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 2.4rem;
     font-weight: 800;
     display: block;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
     line-height: 1.1;
   }
+  .stat:nth-child(1) .stat-number { color: var(--fabric-500); }
+  .stat:nth-child(2) .stat-number { color: var(--azure-500); }
+  .stat:nth-child(3) .stat-number { color: var(--pbi-500); }
+  .stat:nth-child(4) .stat-number { color: var(--fabric-500); }
+
   .stat-label {
     color: var(--text-2);
     font-size: 0.82rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     margin-top: 0.4rem;
-    font-weight: 600;
+    font-weight: 700;
   }
 
-  /* === PROBLEM / SOLUTION (now equalized) === */
+  /* === PROBLEM / SOLUTION — equal sized boxes, 4 per side === */
   .problem {
     padding: 6rem 6%;
     max-width: 1200px;
@@ -565,45 +688,49 @@
     flex-direction: column;
   }
 
+  /* Sub-header — visually distinct from body */
   .problem-col-header {
-    padding: 1.25rem 1.4rem;
-    border-radius: 10px 10px 0 0;
-    font-weight: 600;
-    font-size: 0.95rem;
-    color: var(--text);
+    padding: 1rem 1.4rem;
+    border-radius: 12px 12px 0 0;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
     border: 1px solid var(--border);
     border-bottom: none;
-    background: var(--surface);
   }
   .problem-col.problems .problem-col-header {
+    background: var(--danger-soft);
+    color: var(--danger);
     border-top: 3px solid var(--danger);
   }
   .problem-col.solutions .problem-col-header {
-    border-top: 3px solid var(--success);
+    background: var(--fabric-50);
+    color: var(--fabric-700);
+    border-top: 3px solid var(--fabric-500);
   }
 
   .check-list {
     list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 0;
+    display: grid;
+    grid-template-rows: repeat(4, 1fr);   /* 4 EQUAL rows */
     border: 1px solid var(--border);
     border-top: none;
-    border-radius: 0 0 10px 10px;
+    border-radius: 0 0 12px 12px;
     overflow: hidden;
     background: var(--surface);
-    flex: 1;          /* fills the column for equal heights */
+    flex: 1;
   }
   .check-list li {
     display: flex;
-    align-items: flex-start;
+    align-items: center;                  /* center vertically */
     gap: 0.85rem;
     color: var(--text-2);
     font-size: 0.95rem;
-    padding: 1.05rem 1.4rem;
+    padding: 1.25rem 1.4rem;
     border-top: 1px solid var(--border);
-    line-height: 1.5;
-    min-height: 64px;       /* uniform row height */
+    line-height: 1.45;
+    min-height: 90px;                     /* locked equal height */
     transition: background 0.15s;
   }
   .check-list li:hover { background: var(--surface-tint); color: var(--text); }
@@ -611,15 +738,14 @@
 
   .icon-badge {
     flex-shrink: 0;
-    width: 24px; height: 24px;
+    width: 32px; height: 32px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 0.05rem;
   }
   .icon-badge svg {
-    width: 12px; height: 12px;
+    width: 14px; height: 14px;
     stroke-width: 2.6;
     fill: none;
     stroke-linecap: round;
@@ -628,13 +754,15 @@
 
   .check-list.problems li .icon-badge {
     background: var(--danger-soft);
+    border: 1px solid rgba(226,75,74,0.25);
   }
   .check-list.problems li .icon-badge svg { stroke: var(--danger); }
 
   .check-list.solutions li .icon-badge {
-    background: var(--success-soft);
+    background: var(--fabric-50);
+    border: 1px solid var(--fabric-100);
   }
-  .check-list.solutions li .icon-badge svg { stroke: var(--success); }
+  .check-list.solutions li .icon-badge svg { stroke: var(--fabric-700); }
 
   /* === PROCESS — connected stepper === */
   .process {
@@ -647,10 +775,7 @@
     max-width: 1100px;
     margin: 0 auto;
   }
-  .process-header {
-    text-align: center;
-    margin-bottom: 4.5rem;
-  }
+  .process-header { text-align: center; margin-bottom: 4.5rem; }
 
   .stepper {
     position: relative;
@@ -658,7 +783,6 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 2rem;
   }
-  /* The connecting line behind the circles */
   .stepper::before {
     content: '';
     position: absolute;
@@ -666,8 +790,8 @@
     left: 16.66%;
     right: 16.66%;
     height: 2px;
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    opacity: 0.3;
+    background: var(--grad-soft);
+    opacity: 0.5;
     z-index: 0;
   }
 
@@ -682,39 +806,47 @@
     width: 64px; height: 64px;
     border-radius: 50%;
     background: var(--surface);
-    border: 2px solid var(--accent);
+    border: 2px solid var(--fabric-500);
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto 1.5rem;
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 800;
     font-size: 1.4rem;
-    color: var(--accent-deep);
+    color: var(--fabric-700);
     box-shadow: 0 0 0 6px var(--bg-alt), var(--shadow-md);
     transition: all 0.25s;
     position: relative;
   }
+  .step:nth-child(2) .step-circle { border-color: var(--pbi-500); color: var(--pbi-700); }
+  .step:nth-child(3) .step-circle { border-color: var(--azure-500); color: var(--azure-700); }
+
   .step:hover .step-circle {
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    background: var(--fabric-500);
     color: white;
     transform: scale(1.05);
   }
+  .step:nth-child(2):hover .step-circle { background: var(--pbi-500); }
+  .step:nth-child(3):hover .step-circle { background: var(--azure-500); }
+
   .step-circle::after {
     content: '';
     position: absolute;
     inset: -6px;
     border-radius: 50%;
-    border: 2px dashed var(--accent);
+    border: 2px dashed var(--fabric-500);
     opacity: 0;
     transition: opacity 0.25s;
   }
+  .step:nth-child(2) .step-circle::after { border-color: var(--pbi-500); }
+  .step:nth-child(3) .step-circle::after { border-color: var(--azure-500); }
   .step:hover .step-circle::after { opacity: 0.4; }
 
   .step h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 1.15rem;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--text);
     margin-bottom: 0.6rem;
   }
@@ -727,29 +859,23 @@
   }
   .step-tag {
     display: inline-block;
-    background: var(--accent-soft);
-    color: var(--accent-deep);
     font-size: 0.7rem;
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: 0.1em;
     text-transform: uppercase;
     padding: 0.25rem 0.7rem;
     border-radius: 100px;
     margin-bottom: 0.75rem;
+    background: var(--fabric-50);
+    color: var(--fabric-700);
   }
+  .step:nth-child(2) .step-tag { background: var(--pbi-50); color: var(--pbi-700); }
+  .step:nth-child(3) .step-tag { background: var(--azure-50); color: var(--azure-700); }
 
   /* === SERVICES === */
-  .services {
-    padding: 6rem 6%;
-  }
-  .services-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  .services-header {
-    text-align: center;
-    margin-bottom: 3.5rem;
-  }
+  .services { padding: 6rem 6%; }
+  .services-inner { max-width: 1200px; margin: 0 auto; }
+  .services-header { text-align: center; margin-bottom: 3.5rem; }
   .services-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -770,17 +896,23 @@
     content: '';
     position: absolute;
     top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    height: 3px;
     transform: scaleX(0);
     transform-origin: left;
     transition: transform 0.3s;
   }
+  /* Each card gets a unique brand color stripe */
+  .service-card:nth-child(1)::before, .service-card:nth-child(4)::before { background: var(--fabric-500); }
+  .service-card:nth-child(2)::before, .service-card:nth-child(5)::before { background: var(--pbi-500); }
+  .service-card:nth-child(3)::before, .service-card:nth-child(6)::before { background: var(--azure-500); }
+
   .service-card:hover {
-    border-color: var(--accent);
     transform: translateY(-3px);
     box-shadow: var(--shadow-lg);
   }
+  .service-card:nth-child(1):hover, .service-card:nth-child(4):hover { border-color: var(--fabric-500); }
+  .service-card:nth-child(2):hover, .service-card:nth-child(5):hover { border-color: var(--pbi-500); }
+  .service-card:nth-child(3):hover, .service-card:nth-child(6):hover { border-color: var(--azure-500); }
   .service-card:hover::before { transform: scaleX(1); }
 
   .service-card-top {
@@ -790,41 +922,51 @@
     margin-bottom: 1.25rem;
   }
   .service-icon {
-    width: 44px; height: 44px;
+    width: 46px; height: 46px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: var(--accent-soft);
-    border: 1px solid rgba(6,182,212,0.18);
-    border-radius: 10px;
+    border-radius: 12px;
     transition: all 0.2s;
   }
-  .service-card:hover .service-icon {
-    background: var(--accent);
-    border-color: var(--accent);
+  .service-card:nth-child(1) .service-icon, .service-card:nth-child(4) .service-icon {
+    background: var(--fabric-50);
+    border: 1px solid var(--fabric-100);
   }
+  .service-card:nth-child(2) .service-icon, .service-card:nth-child(5) .service-icon {
+    background: var(--pbi-50);
+    border: 1px solid var(--pbi-100);
+  }
+  .service-card:nth-child(3) .service-icon, .service-card:nth-child(6) .service-icon {
+    background: var(--azure-50);
+    border: 1px solid var(--azure-100);
+  }
+
   .service-icon svg {
     width: 22px; height: 22px;
-    stroke: var(--accent-deep);
     fill: none;
     stroke-width: 1.7;
     stroke-linecap: round;
     stroke-linejoin: round;
     transition: stroke 0.2s;
   }
-  .service-card:hover .service-icon svg { stroke: white; }
+  .service-card:nth-child(1) .service-icon svg, .service-card:nth-child(4) .service-icon svg { stroke: var(--fabric-700); }
+  .service-card:nth-child(2) .service-icon svg, .service-card:nth-child(5) .service-icon svg { stroke: var(--pbi-700); }
+  .service-card:nth-child(3) .service-icon svg, .service-card:nth-child(6) .service-icon svg { stroke: var(--azure-700); }
+
+  .service-card:hover .service-icon { transform: scale(1.05); }
 
   .service-num {
-    font-family: 'Syne', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--muted);
     letter-spacing: 0.05em;
   }
   .service-card h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 1.1rem;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--text);
     margin-bottom: 0.6rem;
     letter-spacing: -0.01em;
@@ -842,10 +984,7 @@
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
   }
-  .approach-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
+  .approach-inner { max-width: 1100px; margin: 0 auto; }
   .approach-header { text-align: center; margin-bottom: 3.5rem; }
   .approach-grid {
     display: grid;
@@ -860,18 +999,18 @@
     box-shadow: var(--shadow-sm);
   }
   .approach-col.us {
-    background: linear-gradient(160deg, #fff, var(--accent-soft));
-    border-color: var(--accent);
+    background: linear-gradient(160deg, #fff, var(--fabric-50));
+    border-color: var(--fabric-500);
     box-shadow: var(--shadow-md);
   }
   .approach-tag {
     display: inline-block;
-    padding: 0.3rem 0.75rem;
+    padding: 0.3rem 0.85rem;
     border-radius: 100px;
     font-size: 0.7rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    font-weight: 700;
+    font-weight: 800;
     margin-bottom: 1rem;
   }
   .approach-col.them .approach-tag {
@@ -880,13 +1019,13 @@
     border: 1px solid var(--border);
   }
   .approach-col.us .approach-tag {
-    background: var(--accent);
+    background: var(--fabric-500);
     color: white;
   }
   .approach-col h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 1.4rem;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--text);
     margin-bottom: 1rem;
     line-height: 1.25;
@@ -914,18 +1053,12 @@
     margin-top: 0.55rem;
   }
   .approach-col.them li::before { background: var(--muted); }
-  .approach-col.us li::before { background: var(--accent); }
+  .approach-col.us li::before { background: var(--fabric-500); }
 
   /* === CASE STUDY === */
-  .case-study {
-    padding: 6rem 6%;
-  }
-  .case-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
+  .case-study { padding: 6rem 6%; }
+  .case-inner { max-width: 1100px; margin: 0 auto; }
   .case-header { text-align: center; margin-bottom: 3.5rem; }
-
   .case-card {
     background: var(--surface);
     border: 1px solid var(--border);
@@ -944,18 +1077,20 @@
     margin-bottom: 1.1rem;
   }
   .case-tag {
-    background: var(--accent-soft);
-    color: var(--accent-deep);
-    padding: 0.3rem 0.75rem;
+    padding: 0.3rem 0.85rem;
     border-radius: 100px;
     font-size: 0.72rem;
-    font-weight: 700;
+    font-weight: 800;
     letter-spacing: 0.04em;
   }
+  .case-tag:nth-child(1) { background: var(--fabric-50); color: var(--fabric-700); }
+  .case-tag:nth-child(2) { background: var(--pbi-50); color: var(--pbi-700); }
+  .case-tag:nth-child(3) { background: var(--azure-50); color: var(--azure-700); }
+
   .case-card h3 {
-    font-family: 'Syne', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 1.45rem;
-    font-weight: 700;
+    font-weight: 800;
     color: var(--text);
     margin-bottom: 1rem;
     line-height: 1.25;
@@ -980,13 +1115,13 @@
     font-size: 0.94rem;
   }
   .case-outcomes li strong {
-    color: var(--accent-deep);
-    font-weight: 700;
+    color: var(--fabric-700);
+    font-weight: 800;
   }
   .case-outcomes li::before {
     content: '→';
-    color: var(--accent);
-    font-weight: 700;
+    color: var(--fabric-500);
+    font-weight: 800;
     flex-shrink: 0;
   }
 
@@ -1010,15 +1145,15 @@
   .case-visual-title {
     font-size: 0.7rem;
     color: var(--muted);
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
   }
   .case-visual-dot {
     width: 6px; height: 6px;
     border-radius: 50%;
-    background: var(--accent);
-    box-shadow: 0 0 8px var(--accent);
+    background: var(--fabric-500);
+    box-shadow: 0 0 8px var(--fabric-500);
   }
   .case-visual-grid {
     display: grid;
@@ -1029,7 +1164,7 @@
   .case-kpi {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 0.55rem 0.7rem;
   }
   .case-kpi-label {
@@ -1037,20 +1172,22 @@
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    font-weight: 600;
+    font-weight: 700;
   }
   .case-kpi-value {
-    font-family: 'Syne', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--accent-deep);
+    font-weight: 800;
+    color: var(--fabric-700);
     margin-top: 0.15rem;
   }
+  .case-kpi:nth-child(2) .case-kpi-value { color: var(--azure-700); }
+
   .case-chart {
     grid-column: 1 / -1;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 0.6rem;
     height: 70px;
     display: flex;
@@ -1059,10 +1196,12 @@
   }
   .case-chart .bar {
     flex: 1;
-    background: linear-gradient(180deg, var(--accent), var(--accent-2));
     border-radius: 2px 2px 0 0;
     opacity: 0.85;
   }
+  .case-chart .bar:nth-child(3n+1) { background: var(--fabric-500); }
+  .case-chart .bar:nth-child(3n+2) { background: var(--azure-500); }
+  .case-chart .bar:nth-child(3n+3) { background: var(--pbi-500); }
 
   /* === STACK === */
   .stack {
@@ -1087,18 +1226,18 @@
   .stack-tag {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 0.6rem 1.1rem;
+    border-radius: 100px;
+    padding: 0.6rem 1.2rem;
     font-size: 0.86rem;
     color: var(--text-2);
-    font-weight: 500;
+    font-weight: 600;
     transition: all 0.15s;
     box-shadow: var(--shadow-sm);
   }
   .stack-tag:hover {
-    border-color: var(--accent);
-    color: var(--accent-deep);
-    background: var(--accent-soft);
+    border-color: var(--fabric-500);
+    color: var(--fabric-700);
+    background: var(--fabric-50);
     transform: translateY(-1px);
   }
 
@@ -1125,7 +1264,7 @@
   }
   .about-text p strong {
     color: var(--text);
-    font-weight: 600;
+    font-weight: 700;
   }
   .about-highlights {
     display: flex;
@@ -1143,24 +1282,27 @@
     transition: all 0.15s;
     box-shadow: var(--shadow-sm);
   }
+  .highlight-item:nth-child(1) { border-left: 4px solid var(--fabric-500); }
+  .highlight-item:nth-child(2) { border-left: 4px solid var(--pbi-500); }
+  .highlight-item:nth-child(3) { border-left: 4px solid var(--azure-500); }
   .highlight-item:hover {
-    border-color: var(--accent);
     box-shadow: var(--shadow-md);
+    transform: translateX(2px);
   }
   .highlight-num {
-    font-family: 'Syne', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 2rem;
     font-weight: 800;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
     flex-shrink: 0;
     line-height: 1;
   }
+  .highlight-item:nth-child(1) .highlight-num { color: var(--fabric-500); }
+  .highlight-item:nth-child(2) .highlight-num { color: var(--pbi-500); }
+  .highlight-item:nth-child(3) .highlight-num { color: var(--azure-500); }
+
   .highlight-item h4 {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 800;
     color: var(--text);
     margin-bottom: 0.3rem;
     font-size: 0.98rem;
@@ -1177,10 +1319,7 @@
     max-width: 850px;
     margin: 0 auto;
   }
-  .faq-header {
-    text-align: center;
-    margin-bottom: 3rem;
-  }
+  .faq-header { text-align: center; margin-bottom: 3rem; }
   .faq-list {
     display: flex;
     flex-direction: column;
@@ -1189,34 +1328,34 @@
   .faq-item {
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 10px;
+    border-radius: 12px;
     overflow: hidden;
     transition: all 0.15s;
     box-shadow: var(--shadow-sm);
   }
   .faq-item:hover { border-color: var(--border-strong); }
   .faq-item[open] {
-    border-color: var(--accent);
+    border-color: var(--fabric-500);
     box-shadow: var(--shadow-md);
   }
   .faq-q {
     padding: 1.15rem 1.4rem;
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text);
     font-size: 0.98rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     list-style: none;
+    font-family: Arial, Helvetica, sans-serif;
   }
   .faq-q::-webkit-details-marker { display: none; }
   .faq-q::after {
     content: '+';
-    color: var(--accent-deep);
+    color: var(--fabric-700);
     font-weight: 400;
     font-size: 1.4rem;
-    transition: transform 0.2s;
   }
   .faq-item[open] .faq-q::after { content: '−'; }
   .faq-a {
@@ -1226,7 +1365,7 @@
     line-height: 1.7;
   }
 
-  /* === CTA === */
+  /* === CONTACT FORM === */
   .cta-section {
     padding: 6rem 6%;
     background: linear-gradient(160deg, var(--text) 0%, #0f3458 100%);
@@ -1240,59 +1379,19 @@
     position: absolute;
     width: 600px; height: 600px;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(6,182,212,0.18), transparent 70%);
+    background: radial-gradient(circle, rgba(29,158,117,0.18), transparent 70%);
     top: -300px; left: 50%;
     transform: translateX(-50%);
     pointer-events: none;
   }
   .cta-inner {
-    max-width: 720px;
+    max-width: 1200px;
     margin: 0 auto;
     position: relative;
     z-index: 2;
   }
-  .cta-section .section-label { color: var(--accent); }
-  .cta-section h2 {
-    color: white;
-    margin-bottom: 1rem;
-  }
-  .cta-section p {
-    color: rgba(255,255,255,0.75);
-    margin-bottom: 2.25rem;
-    font-size: 1.05rem;
-    line-height: 1.65;
-  }
-  .cta-section .btn-primary {
-    background: var(--accent);
-    color: var(--text);
-  }
-  .cta-section .btn-primary:hover {
-    background: white;
-    color: var(--text);
-  }
+  .cta-section h2 { color: white; margin-bottom: 1rem; }
 
-  /* === FOOTER === */
-  footer {
-    padding: 2.25rem 6%;
-    background: var(--surface);
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: var(--muted);
-    font-size: 0.86rem;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
-  footer .footer-links { display: flex; gap: 1.5rem; }
-  footer a {
-    color: var(--text-2);
-    text-decoration: none;
-    transition: color 0.15s;
-  }
-  footer a:hover { color: var(--accent-deep); }
-
-  /* === CONTACT FORM === */
   .contact-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1302,13 +1401,11 @@
     align-items: start;
     text-align: left;
   }
-  .contact-left {
-    color: rgba(255,255,255,0.85);
-  }
-  .contact-left .section-label { color: var(--accent); }
+  .contact-left { color: rgba(255,255,255,0.85); }
+  .contact-left .section-label { color: var(--fabric-300); }
   .contact-left h2 { color: white; margin-bottom: 1rem; }
   .contact-left > p {
-    color: rgba(255,255,255,0.75);
+    color: rgba(255,255,255,0.8);
     font-size: 1.02rem;
     line-height: 1.65;
     margin-bottom: 2rem;
@@ -1324,14 +1421,14 @@
     display: flex;
     align-items: flex-start;
     gap: 0.75rem;
-    color: rgba(255,255,255,0.85);
+    color: rgba(255,255,255,0.9);
     font-size: 0.95rem;
     line-height: 1.5;
   }
   .contact-perks li svg {
     flex-shrink: 0;
     width: 18px; height: 18px;
-    stroke: var(--accent);
+    stroke: var(--fabric-300);
     fill: none;
     stroke-width: 2.5;
     stroke-linecap: round;
@@ -1340,14 +1437,14 @@
   }
   .contact-fallback {
     padding-top: 1.5rem;
-    border-top: 1px solid rgba(255,255,255,0.12);
+    border-top: 1px solid rgba(255,255,255,0.15);
     font-size: 0.9rem;
-    color: rgba(255,255,255,0.65);
+    color: rgba(255,255,255,0.7);
   }
   .contact-fallback a {
-    color: var(--accent);
+    color: var(--fabric-300);
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 700;
   }
   .contact-fallback a:hover { text-decoration: underline; }
 
@@ -1361,7 +1458,6 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
-    margin-bottom: 1rem;
   }
   .form-field {
     margin-bottom: 1rem;
@@ -1370,10 +1466,10 @@
   .form-field label {
     display: block;
     font-size: 0.82rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--text);
     margin-bottom: 0.4rem;
-    letter-spacing: 0.01em;
+    font-family: Arial, Helvetica, sans-serif;
   }
   .form-field label .req { color: var(--danger); }
   .form-field input,
@@ -1383,7 +1479,7 @@
     background: var(--bg);
     border: 1px solid var(--border);
     border-radius: 8px;
-    font-family: 'Inter', sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 0.95rem;
     color: var(--text);
     transition: all 0.15s;
@@ -1391,14 +1487,13 @@
   .form-field input:focus,
   .form-field textarea:focus {
     outline: none;
-    border-color: var(--accent);
+    border-color: var(--fabric-500);
     background: white;
-    box-shadow: 0 0 0 3px var(--accent-tint);
+    box-shadow: 0 0 0 3px rgba(29,158,117,0.15);
   }
   .form-field textarea {
     resize: vertical;
     min-height: 110px;
-    font-family: 'Inter', sans-serif;
   }
   .form-submit {
     width: 100%;
@@ -1406,24 +1501,20 @@
     color: white;
     padding: 0.95rem 1.5rem;
     border: none;
-    border-radius: 8px;
-    font-family: 'Inter', sans-serif;
+    border-radius: 100px;          /* pill */
+    font-family: Arial, Helvetica, sans-serif;
     font-size: 0.98rem;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     transition: all 0.15s;
     margin-top: 0.5rem;
   }
   .form-submit:hover:not(:disabled) {
-    background: var(--accent-deep);
+    background: var(--fabric-700);
     transform: translateY(-1px);
     box-shadow: var(--shadow-md);
   }
-  .form-submit:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-  /* Honeypot — hidden from real users, bots fill it */
+  .form-submit:disabled { opacity: 0.6; cursor: not-allowed; }
   .form-honeypot {
     position: absolute;
     left: -9999px;
@@ -1436,19 +1527,19 @@
     padding: 0.85rem 1rem;
     border-radius: 8px;
     font-size: 0.9rem;
-    font-weight: 500;
+    font-weight: 600;
     display: none;
   }
   .form-status.success {
     display: block;
-    background: var(--success-soft);
-    color: #047857;
-    border: 1px solid var(--success);
+    background: var(--fabric-50);
+    color: var(--fabric-700);
+    border: 1px solid var(--fabric-500);
   }
   .form-status.error {
     display: block;
     background: var(--danger-soft);
-    color: #b91c1c;
+    color: var(--danger);
     border: 1px solid var(--danger);
   }
   .form-tos {
@@ -1458,6 +1549,30 @@
     text-align: center;
     line-height: 1.5;
   }
+
+  /* === FOOTER === */
+  footer {
+    padding: 2.25rem 6%;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--muted);
+    font-size: 0.86rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  footer .footer-logo { display: flex; align-items: center; height: 28px; }
+  footer .footer-logo svg { height: 28px; width: auto; }
+  footer .footer-links { display: flex; gap: 1.5rem; }
+  footer a {
+    color: var(--text-2);
+    text-decoration: none;
+    transition: color 0.15s;
+    font-weight: 500;
+  }
+  footer a:hover { color: var(--fabric-700); }
 
   /* === RESPONSIVE === */
   @media (max-width: 1024px) {
@@ -1477,6 +1592,7 @@
     .clients-row { grid-template-columns: repeat(3, 1fr); }
     .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
     nav ul li:not(:last-child) { display: none; }
+    .nav-loc-li { display: none !important; }
   }
 
   @media (max-width: 600px) {
@@ -1494,8 +1610,22 @@
 
 <!-- ========== NAV ========== -->
 <nav>
-  <div class="logo">Next<span>Analyticx</span></div>
+  <div class="logo-wrap">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="21.93128662109375 92.08378295898437 296.1374267578125 65.83242645263672" preserveAspectRatio="xMidYMid meet"><g><g fill="#0A2540" transform="translate(24.8345947265625,94.98709487915039)"><g transform="translate(0,0)"><g><svg x="0" y="0" width="60" height="60.02581109877247" style="overflow: visible;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-0.02272050641477108 -0.0003465453046374023 159.2595672607422 159.3284454345703"><path d="M143.84 55c-3.14 8.38-6.16 16.4-9.17 24.42-4.78 12.75-9.59 25.5-14.31 38.27-.64 1.74-1.7 2.21-3.39 2.2H92.41c-3 0-3.23-.29-2.17-3.1q9.47-25.2 19-50.4c3-8.11 6.1-16.21 9-24.35a3.17 3.17 0 0 1 3.44-2.47q12.17.11 24.33 0a3.88 3.88 0 0 1 3.9 2.38 79.26 79.26 0 0 1 9.26 33.87c1 27.33-9.23 49.63-30.42 66.69a75.42 75.42 0 0 1-45.07 16.73c-24.48 1.06-45.11-7.46-62.17-24.92a28 28 0 0 1-2.31-2.67c-.49-.66-1.68-1.2-1.19-2.08s1.6-.25 2.44-.35c6.84-.85 12.35 1 17.92 5.68C49 143.8 61.85 148 75.8 148.74c21.07 1.06 39-6.09 53.64-21.05a66.73 66.73 0 0 0 19.24-44 69.94 69.94 0 0 0-3.46-26c-.2-.6-.44-1.18-.69-1.75a5.73 5.73 0 0 0-.69-.94z" fill="#0A2540"/><path d="M15.36 104.72c2.77-7.38 5.29-14.15 7.85-20.91 1.91-5 1.16-4.14 5.93-4.17 7.71-.06 15.43 0 23.14 0 2.82 0 2.87.07 1.86 2.78-4.4 11.78-8.84 23.58-13.21 35.37a2.78 2.78 0 0 1-3 2.09h-25a3.45 3.45 0 0 1-3.36-2.07 80.46 80.46 0 0 1-9.44-34 77.26 77.26 0 0 1 13.22-48.3C26 16.69 43.68 5.11 66.1 1.24c20.59-3.55 39.74.56 57.3 11.82a72.89 72.89 0 0 1 17.37 15.5c.29.36.79.69.64 1.19-.22.71-.92.47-1.42.47h-10.63a4 4 0 0 1-2.86-1.39 67.78 67.78 0 0 0-37.41-17.62c-19.19-2.52-36.59 2.08-51.87 14s-23.85 27.4-26.3 46.39a67.08 67.08 0 0 0 3.3 30.7c.22.61.58 1.22 1.14 2.42z" fill="#0A2540"/><path d="M87.1 59.44h12.75c1.89 0 2.52.46 1.74 2.52Q91.2 89.31 81 116.75c-.84 2.27-1.89 3.22-4.39 3.18-8-.15-16.06-.05-24.08-.07-2.84 0-3-.34-2-3Q60.79 89.43 71 62c.72-1.95 1.73-2.68 3.78-2.62 4.13.15 8.22.05 12.32.06z" fill="#1D9E75"/></svg></svg></g></g><g transform="translate(67,14.46330451965332)"><g><g transform="scale(1.32)"><path d="M15.82 0L13.66 0 4.57-12.84 4.57-2.76Q4.57-2.25 4.66-1.96 4.76-1.66 4.92-1.5 5.08-1.34 5.3-1.29 5.52-1.24 5.76-1.24L5.76-1.24 6.74-1.24 6.74 0 0.65 0 0.65-1.24 1.63-1.24Q1.88-1.24 2.1-1.29 2.31-1.34 2.48-1.5 2.64-1.66 2.73-1.96 2.82-2.25 2.82-2.76L2.82-2.76 2.82-13.99Q2.82-14.46 2.73-14.74 2.63-15.02 2.47-15.17 2.3-15.32 2.08-15.37 1.87-15.42 1.63-15.42L1.63-15.42 0.65-15.42 0.65-16.65 5.83-16.65 14.06-5.01 14.06-13.99Q14.06-14.46 13.97-14.74 13.87-15.02 13.7-15.17 13.54-15.32 13.32-15.37 13.11-15.42 12.87-15.42L12.87-15.42 11.89-15.42 11.89-16.65 17.98-16.65 17.98-15.42 17-15.42Q16.76-15.42 16.55-15.37 16.33-15.32 16.16-15.16 16-15 15.91-14.7 15.82-14.4 15.82-13.9L15.82-13.9 15.82 0ZM25.3-11.28L25.3-11.28Q24.32-11.28 23.75-10.32 23.17-9.35 23.12-7.48L23.12-7.48 27.15-7.48Q27.15-8.37 27.04-9.08 26.94-9.78 26.72-10.27 26.5-10.76 26.15-11.02 25.8-11.28 25.3-11.28ZM25.52 0.23L25.52 0.23Q24.04 0.23 22.91-0.2 21.77-0.64 21.01-1.46 20.25-2.28 19.86-3.47 19.47-4.66 19.47-6.18L19.47-6.18Q19.47-7.82 19.86-9.06 20.25-10.31 20.99-11.14 21.73-11.97 22.8-12.38 23.88-12.8 25.26-12.8L25.26-12.8Q26.52-12.8 27.53-12.44 28.55-12.08 29.25-11.38 29.96-10.67 30.34-9.62 30.71-8.57 30.71-7.19L30.71-7.19 30.71-5.99 23.07-5.99Q23.1-4.82 23.33-3.97 23.55-3.13 23.94-2.58 24.33-2.04 24.9-1.78 25.46-1.51 26.19-1.51L26.19-1.51Q26.79-1.51 27.31-1.66 27.82-1.8 28.23-2.06 28.65-2.31 28.96-2.66 29.28-3.01 29.48-3.4L29.48-3.4Q30.11-3.06 30.11-2.27L30.11-2.27Q30.11-1.77 29.83-1.32 29.56-0.87 28.99-0.52 28.42-0.18 27.56 0.02 26.7 0.23 25.52 0.23ZM41.84-10.57L41.84-10.57Q41.84-10.99 41.51-11.13 41.19-11.26 40.64-11.26L40.64-11.26 40.57-11.26 40.57-12.5 45.96-12.5 45.96-11.26 45.75-11.26Q45.41-11.26 45.14-11.2 44.88-11.14 44.61-10.97 44.34-10.81 44.06-10.52 43.77-10.23 43.4-9.77L43.4-9.77 40.99-6.83 44.42-2.47Q44.96-1.8 45.41-1.52 45.86-1.24 46.29-1.24L46.29-1.24 46.6-1.24 46.6 0 39.17 0 39.17-1.24 39.3-1.24Q40.7-1.24 40.7-2L40.7-2Q40.7-2.14 40.66-2.28 40.63-2.41 40.54-2.6 40.45-2.78 40.27-3.02 40.09-3.27 39.81-3.61L39.81-3.61 38.48-5.23 36.85-3.2Q36.63-2.92 36.5-2.62 36.36-2.32 36.36-2.03L36.36-2.03Q36.36-1.64 36.69-1.44 37.02-1.24 37.81-1.24L37.81-1.24 37.87-1.24 37.87 0 31.95 0 31.95-1.24 32.16-1.24Q32.58-1.24 32.9-1.32 33.22-1.39 33.5-1.56 33.77-1.73 34.06-2.02 34.34-2.3 34.7-2.73L34.7-2.73 37.63-6.27 34.7-10.03Q34.21-10.65 33.72-10.95 33.23-11.26 32.69-11.26L32.69-11.26 32.39-11.26 32.39-12.5 39.72-12.5 39.72-11.26 39.64-11.26Q39.24-11.26 38.98-11.21 38.73-11.16 38.58-11.07 38.43-10.98 38.37-10.85 38.32-10.73 38.32-10.59L38.32-10.59Q38.32-10.34 38.44-10.11 38.57-9.87 38.85-9.52L38.85-9.52 40.15-7.93 41.26-9.26Q41.53-9.61 41.68-9.93 41.84-10.25 41.84-10.57ZM54.08-1.65L54.08-1.65Q54.53-1.65 54.95-1.71 55.36-1.78 55.73-1.87L55.73-1.87 55.73-0.35Q55.55-0.26 55.23-0.16 54.92-0.06 54.5 0.03 54.09 0.11 53.57 0.17 53.04 0.23 52.43 0.23L52.43 0.23Q51.64 0.23 51 0.04 50.37-0.15 49.92-0.59 49.48-1.02 49.24-1.73 49-2.43 49-3.45L49-3.45 49-10.91 47.25-10.91 47.25-12.1Q48-12.1 48.59-12.4 49.18-12.7 49.53-13.08L49.53-13.08Q50.25-13.84 50.6-15.4L50.6-15.4 52.54-15.4 52.54-12.5 55.52-12.5 55.52-10.91 52.54-10.91 52.54-3.69Q52.54-2.63 52.9-2.14 53.26-1.65 54.08-1.65ZM66.95-5.48L61.27-5.48 60.6-3.47Q60.51-3.19 60.41-2.81 60.32-2.43 60.32-2.14L60.32-2.14Q60.32-1.91 60.41-1.74 60.5-1.57 60.65-1.46 60.8-1.36 60.98-1.3 61.17-1.24 61.38-1.24L61.38-1.24 62.36-1.24 62.36 0 56.29 0 56.29-1.24 56.57-1.24Q56.88-1.24 57.14-1.31 57.39-1.38 57.61-1.57 57.84-1.75 58.04-2.08 58.23-2.41 58.44-2.94L58.44-2.94 63.5-16.65 66.7-16.65 71.57-2.92Q71.74-2.43 71.93-2.1 72.12-1.78 72.34-1.59 72.56-1.4 72.81-1.32 73.06-1.24 73.33-1.24L73.33-1.24 73.76-1.24 73.76 0 66.06 0 66.06-1.24 66.97-1.24Q67.14-1.24 67.32-1.29 67.5-1.34 67.65-1.45 67.79-1.56 67.88-1.73 67.97-1.9 67.97-2.14L67.97-2.14Q67.97-2.43 67.9-2.69 67.83-2.95 67.77-3.14L67.77-3.14 66.95-5.48ZM66.48-6.9L65.25-10.73Q65.12-11.13 64.99-11.56 64.86-12 64.73-12.46 64.6-12.91 64.48-13.36 64.36-13.81 64.27-14.22L64.27-14.22Q64.17-13.87 64.03-13.45 63.89-13.03 63.74-12.58 63.59-12.14 63.43-11.69 63.28-11.25 63.14-10.84L63.14-10.84 61.76-6.9 66.48-6.9ZM88.71 0L83.53 0 83.53-7.67Q83.53-8.43 83.43-9.01 83.33-9.6 83.11-10 82.89-10.4 82.53-10.61 82.17-10.82 81.66-10.82L81.66-10.82Q81.08-10.82 80.69-10.52 80.3-10.23 80.07-9.73 79.84-9.24 79.73-8.58 79.63-7.93 79.63-7.21L79.63-7.21 79.63-2.76Q79.63-2.27 79.75-1.97 79.87-1.67 80.09-1.51 80.3-1.34 80.62-1.29 80.93-1.24 81.32-1.24L81.32-1.24 81.38-1.24 81.38 0 74.22 0 74.22-1.24 74.27-1.24Q74.67-1.24 75-1.29 75.33-1.34 75.57-1.51 75.82-1.69 75.95-2 76.09-2.32 76.09-2.85L76.09-2.85 76.09-9.75Q76.09-10.24 75.97-10.53 75.85-10.83 75.63-10.99 75.41-11.16 75.1-11.21 74.79-11.26 74.4-11.26L74.4-11.26 74.34-11.26 74.34-12.5 79.23-12.5 79.54-10.84 79.65-10.84Q80.01-11.5 80.4-11.89 80.79-12.28 81.24-12.48 81.68-12.69 82.18-12.74 82.67-12.8 83.22-12.8L83.22-12.8Q84.12-12.8 84.83-12.54 85.55-12.28 86.05-11.73 86.54-11.18 86.8-10.33 87.07-9.49 87.07-8.3L87.07-8.3 87.07-2.89Q87.07-2.35 87.16-2.02 87.26-1.7 87.45-1.53 87.65-1.36 87.94-1.3 88.24-1.24 88.64-1.24L88.64-1.24 88.71-1.24 88.71 0ZM93.98-3.47L93.98-3.47Q93.98-2.47 94.3-1.97 94.62-1.47 95.3-1.47L95.3-1.47Q95.8-1.47 96.21-1.68 96.61-1.89 96.9-2.28 97.19-2.66 97.34-3.22 97.5-3.77 97.5-4.45L97.5-4.45 97.5-6.21 96.45-6.14Q95.76-6.1 95.28-5.92 94.8-5.73 94.51-5.4 94.23-5.07 94.1-4.59 93.98-4.11 93.98-3.47ZM96.05-11.38L96.05-11.38Q95.61-11.38 95.31-11.19 95-11 94.82-10.66 94.64-10.33 94.57-9.87 94.49-9.41 94.49-8.86L94.49-8.86Q92.92-8.86 92.13-9.21 91.34-9.57 91.34-10.42L91.34-10.42Q91.34-11.06 91.72-11.51 92.1-11.97 92.75-12.25 93.41-12.54 94.28-12.67 95.15-12.8 96.14-12.8L96.14-12.8Q97.37-12.8 98.29-12.59 99.21-12.38 99.81-11.91 100.42-11.44 100.73-10.69 101.04-9.93 101.04-8.84L101.04-8.84 101.04-2.89Q101.04-2.41 101.11-2.1 101.19-1.78 101.35-1.59 101.51-1.4 101.78-1.32 102.05-1.24 102.44-1.24L102.44-1.24 102.53-1.24 102.53 0 98.19 0 97.7-1.61 97.5-1.61Q97.11-1.14 96.77-0.79 96.43-0.44 96.04-0.22 95.65 0.01 95.17 0.12 94.68 0.23 94.02 0.23L94.02 0.23Q93.25 0.23 92.58 0 91.92-0.23 91.42-0.7 90.93-1.17 90.64-1.88 90.36-2.6 90.36-3.56L90.36-3.56Q90.36-5.47 91.66-6.38 92.97-7.29 95.58-7.37L95.58-7.37 97.5-7.44 97.5-8.72Q97.5-9.3 97.45-9.79 97.41-10.28 97.26-10.64 97.11-10.99 96.82-11.18 96.53-11.38 96.05-11.38ZM103.68-1.24L103.95-1.24Q104.22-1.24 104.51-1.29 104.8-1.34 105.04-1.5 105.29-1.66 105.45-1.96 105.62-2.25 105.62-2.76L105.62-2.76 105.62-15.07Q105.62-15.53 105.45-15.81 105.29-16.09 105.04-16.24 104.79-16.4 104.49-16.44 104.2-16.49 103.95-16.49L103.95-16.49 103.68-16.49 103.68-17.72 109.16-17.72 109.16-2.76Q109.16-2.25 109.32-1.96 109.49-1.66 109.73-1.5 109.98-1.34 110.27-1.29 110.57-1.24 110.82-1.24L110.82-1.24 111.09-1.24 111.09 0 103.68 0 103.68-1.24ZM119.75-12.5L125-12.5 125-11.26Q124.64-11.26 124.38-11.18 124.11-11.1 123.89-10.9 123.68-10.7 123.49-10.38 123.31-10.05 123.13-9.57L123.13-9.57Q122.72-8.4 122.28-7.2 121.83-5.99 121.38-4.78 120.93-3.56 120.48-2.36 120.03-1.16 119.61 0L119.61 0Q119.2 1.13 118.84 1.98 118.47 2.84 118.07 3.46 117.66 4.09 117.17 4.5 116.68 4.91 116.04 5.15 115.39 5.4 114.53 5.5 113.67 5.6 112.52 5.6L112.52 5.6 112.12 5.6 112.12 4.25Q113.34 4.25 114.19 3.95 115.05 3.66 115.64 3.11 116.23 2.56 116.61 1.8 116.99 1.04 117.28 0.11L117.28 0.11 113.08-10.15Q112.94-10.48 112.77-10.67 112.6-10.86 112.4-10.97 112.21-11.07 111.98-11.1 111.75-11.13 111.49-11.13L111.49-11.13 111.49-12.5 118.14-12.5 118.14-11.26Q117.46-11.26 117.07-11.09 116.67-10.91 116.67-10.4L116.67-10.4Q116.67-10.2 116.75-9.94 116.83-9.67 116.9-9.5L116.9-9.5Q117.11-9.01 117.33-8.43 117.55-7.86 117.76-7.28 117.97-6.71 118.17-6.17 118.36-5.64 118.51-5.23L118.51-5.23Q118.68-4.78 118.79-4.42 118.91-4.07 118.98-3.77 119.05-3.48 119.1-3.24 119.14-2.99 119.17-2.76L119.17-2.76Q119.19-2.99 119.26-3.29 119.33-3.58 119.41-3.84 119.49-4.11 119.57-4.32 119.65-4.53 119.68-4.62L119.68-4.62 121.22-9.19Q121.26-9.3 121.3-9.46 121.34-9.61 121.38-9.77 121.41-9.93 121.43-10.08 121.44-10.23 121.44-10.33L121.44-10.33Q121.44-10.86 121-11.06 120.56-11.26 119.75-11.26L119.75-11.26 119.75-12.5ZM132.32-1.65L132.32-1.65Q132.78-1.65 133.19-1.71 133.61-1.78 133.97-1.87L133.97-1.87 133.97-0.35Q133.79-0.26 133.48-0.16 133.16-0.06 132.75 0.03 132.33 0.11 131.81 0.17 131.28 0.23 130.67 0.23L130.67 0.23Q129.88 0.23 129.25 0.04 128.61-0.15 128.16-0.59 127.72-1.02 127.48-1.73 127.24-2.43 127.24-3.45L127.24-3.45 127.24-10.91 125.49-10.91 125.49-12.1Q126.24-12.1 126.83-12.4 127.42-12.7 127.78-13.08L127.78-13.08Q128.49-13.84 128.85-15.4L128.85-15.4 130.78-15.4 130.78-12.5 133.77-12.5 133.77-10.91 130.78-10.91 130.78-3.69Q130.78-2.63 131.14-2.14 131.5-1.65 132.32-1.65ZM136.44-16.28L136.44-16.28Q136.44-16.73 136.6-17.05 136.75-17.37 137.02-17.56 137.28-17.76 137.64-17.86 138-17.96 138.42-17.96L138.42-17.96Q138.82-17.96 139.19-17.86 139.55-17.76 139.82-17.56 140.1-17.37 140.26-17.05 140.43-16.73 140.43-16.28L140.43-16.28Q140.43-15.85 140.26-15.53 140.1-15.21 139.82-15.01 139.55-14.8 139.19-14.7 138.82-14.6 138.42-14.6L138.42-14.6Q138-14.6 137.64-14.7 137.28-14.8 137.02-15.01 136.75-15.21 136.6-15.53 136.44-15.85 136.44-16.28ZM134.84-1.24L135.11-1.24Q135.37-1.24 135.66-1.29 135.95-1.34 136.2-1.5 136.44-1.66 136.61-1.96 136.77-2.25 136.77-2.76L136.77-2.76 136.77-9.84Q136.77-10.31 136.61-10.58 136.44-10.86 136.19-11.02 135.94-11.17 135.65-11.22 135.36-11.26 135.11-11.26L135.11-11.26 134.84-11.26 134.84-12.5 140.31-12.5 140.31-2.76Q140.31-2.25 140.48-1.96 140.64-1.66 140.89-1.5 141.13-1.34 141.43-1.29 141.73-1.24 141.98-1.24L141.98-1.24 142.25-1.24 142.25 0 134.84 0 134.84-1.24ZM149.53 0.23L149.53 0.23Q148.24 0.23 147.17-0.1 146.11-0.43 145.35-1.2 144.58-1.96 144.16-3.19 143.74-4.42 143.74-6.21L143.74-6.21Q143.74-8.1 144.18-9.36 144.62-10.62 145.39-11.39 146.16-12.15 147.2-12.47 148.25-12.8 149.46-12.8L149.46-12.8Q150.58-12.8 151.45-12.61 152.32-12.42 152.9-12.09 153.48-11.76 153.78-11.31 154.08-10.86 154.08-10.35L154.08-10.35Q154.08-9.98 153.95-9.62 153.82-9.26 153.48-8.98 153.15-8.71 152.56-8.54 151.97-8.37 151.06-8.37L151.06-8.37Q151.06-8.97 150.99-9.52 150.91-10.07 150.74-10.48 150.57-10.89 150.28-11.13 149.99-11.38 149.55-11.38L149.55-11.38Q149.04-11.38 148.63-11.13 148.23-10.89 147.94-10.29 147.65-9.7 147.49-8.71 147.34-7.72 147.34-6.23L147.34-6.23Q147.34-3.86 147.99-2.69 148.64-1.51 150.11-1.51L150.11-1.51Q150.71-1.51 151.24-1.66 151.77-1.8 152.2-2.06 152.63-2.31 152.96-2.66 153.28-3.01 153.49-3.4L153.49-3.4Q153.77-3.23 153.91-2.94 154.05-2.65 154.05-2.33L154.05-2.33Q154.05-1.89 153.78-1.43 153.52-0.98 152.97-0.61 152.42-0.24 151.56-0.01 150.71 0.23 149.53 0.23ZM165.08-10.57L165.08-10.57Q165.08-10.99 164.76-11.13 164.43-11.26 163.89-11.26L163.89-11.26 163.82-11.26 163.82-12.5 169.2-12.5 169.2-11.26 169-11.26Q168.66-11.26 168.39-11.2 168.12-11.14 167.85-10.97 167.59-10.81 167.3-10.52 167.02-10.23 166.64-9.77L166.64-9.77 164.24-6.83 167.67-2.47Q168.2-1.8 168.65-1.52 169.1-1.24 169.53-1.24L169.53-1.24 169.84-1.24 169.84 0 162.42 0 162.42-1.24 162.54-1.24Q163.94-1.24 163.94-2L163.94-2Q163.94-2.14 163.91-2.28 163.87-2.41 163.78-2.6 163.69-2.78 163.51-3.02 163.34-3.27 163.05-3.61L163.05-3.61 161.72-5.23 160.09-3.2Q159.88-2.92 159.74-2.62 159.6-2.32 159.6-2.03L159.6-2.03Q159.6-1.64 159.93-1.44 160.26-1.24 161.05-1.24L161.05-1.24 161.12-1.24 161.12 0 155.2 0 155.2-1.24 155.4-1.24Q155.82-1.24 156.14-1.32 156.46-1.39 156.74-1.56 157.02-1.73 157.3-2.02 157.59-2.3 157.94-2.73L157.94-2.73 160.88-6.27 157.94-10.03Q157.45-10.65 156.96-10.95 156.47-11.26 155.94-11.26L155.94-11.26 155.63-11.26 155.63-12.5 162.96-12.5 162.96-11.26 162.88-11.26Q162.48-11.26 162.23-11.21 161.97-11.16 161.82-11.07 161.68-10.98 161.62-10.85 161.56-10.73 161.56-10.59L161.56-10.59Q161.56-10.34 161.69-10.11 161.81-9.87 162.1-9.52L162.1-9.52 163.4-7.93 164.5-9.26Q164.77-9.61 164.93-9.93 165.08-10.25 165.08-10.57Z" transform="translate(-0.65, 17.96)" fill="#0A2540"/></g></g></g></g></g></svg>
+  </div>
   <ul>
+    <li class="nav-loc-li">
+      <span class="nav-location">
+        <span class="nav-pin" aria-hidden="true">
+          <svg class="nav-pin-svg" viewBox="0 0 24 24">
+            <!-- Map pin teardrop shape with inner circle -->
+            <path d="M12 2 C8 2 5 5 5 9 C5 14 12 21 12 21 C12 21 19 14 19 9 C19 5 16 2 12 2 Z" />
+            <circle cx="12" cy="9" r="2.5" fill="white" stroke="none"/>
+          </svg>
+        </span>
+        Washington DC Metro · USA
+      </span>
+    </li>
     <li><a href="#services">Services</a></li>
     <li><a href="#process">How We Work</a></li>
     <li><a href="#about">About</a></li>
@@ -1504,23 +1634,21 @@
   </ul>
 </nav>
 
-<!-- ========== HERO with abstract dashboard ========== -->
+<!-- ========== HERO ========== -->
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-content">
       <div class="hero-badge">Microsoft Fabric · Power BI · AI</div>
-      <h1>Your data is talking.<br><span class="highlight">Are you listening?</span></h1>
-      <p class="hero-sub">A boutique Microsoft Fabric and Power BI consultancy run by senior practitioners. We migrate your data, build dashboards your team actually uses, and integrate AI that makes them smarter — without the enterprise price tag.</p>
+      <h1>Better <span class="hl-pbi">dashboards</span>.<br>Cleaner <span class="hl-fabric">data</span>.<br>Smarter <span class="hl-azure">AI</span>.</h1>
+      <p class="hero-sub">A boutique Microsoft Fabric and Power BI consultancy run by senior practitioners. We migrate your data, build dashboards your team actually uses, and integrate AI that drives real decisions — without the enterprise price tag.</p>
       <div class="hero-actions">
         <a href="#contact" class="btn-primary">Book an Intro Call →</a>
         <a href="#services" class="btn-secondary">See What We Do</a>
       </div>
     </div>
 
-    <!-- Abstract dashboard visual -->
     <div class="hero-visual" aria-hidden="true">
       <div class="dash-frame">
-
         <div class="dash-toolbar">
           <span class="dash-title">Revenue Insights</span>
           <div class="dash-dots">
@@ -1531,17 +1659,17 @@
         </div>
 
         <div class="dash-kpis">
-          <div class="kpi">
+          <div class="kpi fabric">
             <div class="kpi-label">Revenue</div>
             <div class="kpi-value">$2.4M</div>
             <div class="kpi-trend">↑ 18.2%</div>
           </div>
-          <div class="kpi">
+          <div class="kpi pbi">
             <div class="kpi-label">Refresh</div>
             <div class="kpi-value">3.8m</div>
-            <div class="kpi-trend down">↓ 91%</div>
+            <div class="kpi-trend">↓ 91%</div>
           </div>
-          <div class="kpi">
+          <div class="kpi azure">
             <div class="kpi-label">Active</div>
             <div class="kpi-value">847</div>
             <div class="kpi-trend">↑ 12.4%</div>
@@ -1570,8 +1698,8 @@
               <svg viewBox="0 0 80 80">
                 <defs>
                   <linearGradient id="donutGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stop-color="#06B6D4"/>
-                    <stop offset="100%" stop-color="#6366F1"/>
+                    <stop offset="0%" stop-color="#1D9E75"/>
+                    <stop offset="100%" stop-color="#378ADD"/>
                   </linearGradient>
                 </defs>
                 <circle class="donut-track" cx="40" cy="40" r="30" fill="none" stroke-width="8"/>
@@ -1587,19 +1715,19 @@
           <svg class="line-svg" viewBox="0 0 300 38" preserveAspectRatio="none">
             <defs>
               <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stop-color="#06B6D4"/>
-                <stop offset="100%" stop-color="#6366F1"/>
+                <stop offset="0%" stop-color="#1D9E75"/>
+                <stop offset="50%" stop-color="#EF9F27"/>
+                <stop offset="100%" stop-color="#378ADD"/>
               </linearGradient>
               <linearGradient id="areaGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                <stop offset="0%" stop-color="#06B6D4" stop-opacity="0.25"/>
-                <stop offset="100%" stop-color="#06B6D4" stop-opacity="0"/>
+                <stop offset="0%" stop-color="#1D9E75" stop-opacity="0.25"/>
+                <stop offset="100%" stop-color="#1D9E75" stop-opacity="0"/>
               </linearGradient>
             </defs>
             <path class="line-area" d="M0,28 L20,24 L40,26 L60,18 L80,22 L100,15 L120,18 L140,12 L160,16 L180,9 L200,13 L220,7 L240,10 L260,5 L280,8 L300,3 L300,38 L0,38 Z"/>
             <path class="line-path" d="M0,28 L20,24 L40,26 L60,18 L80,22 L100,15 L120,18 L140,12 L160,16 L180,9 L200,13 L220,7 L240,10 L260,5 L280,8 L300,3"/>
           </svg>
         </div>
-
       </div>
     </div>
   </div>
@@ -1640,7 +1768,7 @@
   </div>
 </div>
 
-<!-- ========== PROBLEM / SOLUTION (equalized) ========== -->
+<!-- ========== PROBLEM / SOLUTION (4 each, equal heights) ========== -->
 <section class="problem">
   <div class="problem-headline">
     <div class="section-label">The Problem We Solve</div>
@@ -1649,38 +1777,33 @@
 
   <div class="problem-grid">
     <div class="problem-col problems">
-      <div class="problem-col-header">Sound familiar? Common challenges we hear every day.</div>
+      <div class="problem-col-header">Common challenges we hear</div>
       <ul class="check-list problems">
-        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Data is everywhere but nobody can make sense of it</li>
-        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Power BI reports are slow, wrong, or nobody trusts them</li>
-        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>You want AI but don't know where to start</li>
-        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Your data pipelines break and nobody knows why</li>
-        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>You're paying for Azure but it's not set up right</li>
-        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Decisions are made on gut feeling, not data</li>
+        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Reports are slow, inconsistent, or nobody trusts the numbers</li>
+        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Data is scattered across systems with no single source of truth</li>
+        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>You want AI and Copilot but don't know where to start</li>
+        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></span>Pipelines break, costs creep, and decisions still come from gut</li>
       </ul>
     </div>
     <div class="problem-col solutions">
-      <div class="problem-col-header">After working with Next Analyticx.</div>
+      <div class="problem-col-header">After working with Next Analyticx</div>
       <ul class="check-list solutions">
-        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Clean data flowing through a governed Fabric lakehouse</li>
-        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Beautiful, fast Power BI dashboards your team uses</li>
-        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>AI and Copilot integrated where it actually drives value</li>
-        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Automated pipelines that run without babysitting</li>
-        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Cloud architecture optimized for performance and cost</li>
-        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Real-time visibility into what's actually happening</li>
+        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Beautiful, fast Power BI dashboards your team actually uses</li>
+        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Clean data flowing through a governed Microsoft Fabric lakehouse</li>
+        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>AI and Copilot integrated where they actually drive value</li>
+        <li><span class="icon-badge"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg></span>Automated pipelines and real-time visibility you can rely on</li>
       </ul>
     </div>
   </div>
 </section>
 
-<!-- ========== PROCESS — connected stepper ========== -->
+<!-- ========== PROCESS ========== -->
 <section class="process" id="process">
   <div class="process-inner">
     <div class="process-header">
       <div class="section-label">How We Work</div>
       <h2>From discovery to dashboard in 30 days</h2>
     </div>
-
     <div class="stepper">
       <div class="step">
         <div class="step-circle">01</div>
@@ -1898,6 +2021,7 @@
       <p>Next Analyticx is a boutique data and analytics firm built by senior practitioners — not fresh graduates or generalist consultants. Every engagement is led by engineers with <strong>16+ years of hands-on experience</strong> across the full Microsoft data stack.</p>
       <p>We've designed analytics infrastructure for <strong>national-scale telecommunications companies</strong>, built Power BI from zero at B2B incentives platforms, and integrated AI into production reporting workflows.</p>
       <p>We're not here to sell you software licenses or pad project timelines. We're here to <strong>solve your data problem and leave you with something that works.</strong></p>
+      <p>Our team is <strong>US-based in Northern Virginia</strong>, in the heart of the Washington DC metro — close to federal clients and one of the densest concentrations of cloud and data talent in the country.</p>
       <br>
       <a href="#contact" class="btn-primary">Talk to an expert →</a>
     </div>
@@ -1970,10 +2094,9 @@
 
 <!-- ========== CONTACT FORM ========== -->
 <section class="cta-section" id="contact">
-  <div class="cta-inner" style="max-width: 1200px;">
+  <div class="cta-inner">
     <div class="contact-grid">
 
-      <!-- LEFT: Pitch -->
       <div class="contact-left">
         <div class="section-label">Get Started</div>
         <h2>Ready to actually<br>use your data?</h2>
@@ -1999,16 +2122,11 @@
         </div>
       </div>
 
-      <!-- RIGHT: Form -->
       <form class="contact-form" id="contactForm" action="https://api.web3forms.com/submit" method="POST">
-
-        <!-- Web3Forms config -->
         <input type="hidden" name="access_key" value="2ffc392c-ded2-4573-9386-979e01051b05">
         <input type="hidden" name="subject" value="New lead from nextanalyticx.com">
         <input type="hidden" name="from_name" value="Next Analyticx Website">
         <input type="hidden" name="redirect" value="false">
-
-        <!-- Honeypot field — hidden from real users, traps bots -->
         <input type="checkbox" name="botcheck" class="form-honeypot" tabindex="-1" autocomplete="off">
 
         <div class="form-row">
@@ -2033,9 +2151,7 @@
         </div>
 
         <button type="submit" class="form-submit" id="submitBtn">Send Message →</button>
-
         <div class="form-status" id="formStatus"></div>
-
         <div class="form-tos">By submitting, you agree to be contacted about your inquiry. We never share your information.</div>
       </form>
 
@@ -2045,18 +2161,20 @@
 
 <!-- ========== FOOTER ========== -->
 <footer>
-  <div class="logo" style="font-size: 1.05rem;">Next<span style="color: var(--accent)">Analyticx</span></div>
+  <div class="footer-logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="21.93128662109375 92.08378295898437 296.1374267578125 65.83242645263672" preserveAspectRatio="xMidYMid meet"><g><g fill="#0A2540" transform="translate(24.8345947265625,94.98709487915039)"><g transform="translate(0,0)"><g><svg x="0" y="0" width="60" height="60.02581109877247" style="overflow: visible;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="-0.02272050641477108 -0.0003465453046374023 159.2595672607422 159.3284454345703"><path d="M143.84 55c-3.14 8.38-6.16 16.4-9.17 24.42-4.78 12.75-9.59 25.5-14.31 38.27-.64 1.74-1.7 2.21-3.39 2.2H92.41c-3 0-3.23-.29-2.17-3.1q9.47-25.2 19-50.4c3-8.11 6.1-16.21 9-24.35a3.17 3.17 0 0 1 3.44-2.47q12.17.11 24.33 0a3.88 3.88 0 0 1 3.9 2.38 79.26 79.26 0 0 1 9.26 33.87c1 27.33-9.23 49.63-30.42 66.69a75.42 75.42 0 0 1-45.07 16.73c-24.48 1.06-45.11-7.46-62.17-24.92a28 28 0 0 1-2.31-2.67c-.49-.66-1.68-1.2-1.19-2.08s1.6-.25 2.44-.35c6.84-.85 12.35 1 17.92 5.68C49 143.8 61.85 148 75.8 148.74c21.07 1.06 39-6.09 53.64-21.05a66.73 66.73 0 0 0 19.24-44 69.94 69.94 0 0 0-3.46-26c-.2-.6-.44-1.18-.69-1.75a5.73 5.73 0 0 0-.69-.94z" fill="#0A2540"/><path d="M15.36 104.72c2.77-7.38 5.29-14.15 7.85-20.91 1.91-5 1.16-4.14 5.93-4.17 7.71-.06 15.43 0 23.14 0 2.82 0 2.87.07 1.86 2.78-4.4 11.78-8.84 23.58-13.21 35.37a2.78 2.78 0 0 1-3 2.09h-25a3.45 3.45 0 0 1-3.36-2.07 80.46 80.46 0 0 1-9.44-34 77.26 77.26 0 0 1 13.22-48.3C26 16.69 43.68 5.11 66.1 1.24c20.59-3.55 39.74.56 57.3 11.82a72.89 72.89 0 0 1 17.37 15.5c.29.36.79.69.64 1.19-.22.71-.92.47-1.42.47h-10.63a4 4 0 0 1-2.86-1.39 67.78 67.78 0 0 0-37.41-17.62c-19.19-2.52-36.59 2.08-51.87 14s-23.85 27.4-26.3 46.39a67.08 67.08 0 0 0 3.3 30.7c.22.61.58 1.22 1.14 2.42z" fill="#0A2540"/><path d="M87.1 59.44h12.75c1.89 0 2.52.46 1.74 2.52Q91.2 89.31 81 116.75c-.84 2.27-1.89 3.22-4.39 3.18-8-.15-16.06-.05-24.08-.07-2.84 0-3-.34-2-3Q60.79 89.43 71 62c.72-1.95 1.73-2.68 3.78-2.62 4.13.15 8.22.05 12.32.06z" fill="#1D9E75"/></svg></svg></g></g><g transform="translate(67,14.46330451965332)"><g><g transform="scale(1.32)"><path d="M15.82 0L13.66 0 4.57-12.84 4.57-2.76Q4.57-2.25 4.66-1.96 4.76-1.66 4.92-1.5 5.08-1.34 5.3-1.29 5.52-1.24 5.76-1.24L5.76-1.24 6.74-1.24 6.74 0 0.65 0 0.65-1.24 1.63-1.24Q1.88-1.24 2.1-1.29 2.31-1.34 2.48-1.5 2.64-1.66 2.73-1.96 2.82-2.25 2.82-2.76L2.82-2.76 2.82-13.99Q2.82-14.46 2.73-14.74 2.63-15.02 2.47-15.17 2.3-15.32 2.08-15.37 1.87-15.42 1.63-15.42L1.63-15.42 0.65-15.42 0.65-16.65 5.83-16.65 14.06-5.01 14.06-13.99Q14.06-14.46 13.97-14.74 13.87-15.02 13.7-15.17 13.54-15.32 13.32-15.37 13.11-15.42 12.87-15.42L12.87-15.42 11.89-15.42 11.89-16.65 17.98-16.65 17.98-15.42 17-15.42Q16.76-15.42 16.55-15.37 16.33-15.32 16.16-15.16 16-15 15.91-14.7 15.82-14.4 15.82-13.9L15.82-13.9 15.82 0Z" fill="#0A2540"/></g></g></g></g></g></svg>
+  </div>
   <div class="footer-links">
     <a href="#services">Services</a>
     <a href="#about">About</a>
     <a href="#faq">FAQ</a>
     <a href="#contact">Contact</a>
   </div>
-  <div>© 2026 Next Analyticx — Fairfax, VA</div>
+  <div>© 2026 Next Analyticx · Washington DC Metro, USA</div>
 </footer>
 
 <script>
-  // === Email obfuscation — assembles address at runtime ===
+  // === Email obfuscation ===
   (function() {
     var user = 'contact';
     var domain = 'nextanalyticx';
@@ -2070,7 +2188,7 @@
     }
   })();
 
-  // === Contact form — AJAX submission to Web3Forms with inline success/error ===
+  // === Contact form ===
   (function() {
     var form = document.getElementById('contactForm');
     var status = document.getElementById('formStatus');
@@ -2079,8 +2197,6 @@
 
     form.addEventListener('submit', function(e) {
       e.preventDefault();
-
-      // Reset status, disable button
       status.className = 'form-status';
       status.textContent = '';
       btn.disabled = true;
