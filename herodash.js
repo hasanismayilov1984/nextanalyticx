@@ -1,83 +1,119 @@
 const TARGET_DONUT = 128;
 const CIRCUM = 188.5;
 const TARGET_PCT = 68;
+const DURATION = 3000;
 
-function animateBars(){
-  const bars = document.querySelectorAll('.bar');
-  bars.forEach((b,i)=>{
-    setTimeout(()=>{ b.style.transform='scaleY(1)'; },100+i*80);
-  });
+// ===== FORMATTERS =====
+const formatRevenue = (v) => "$" + (v / 1000000).toFixed(1) + "M";
+const formatRefresh = (v) => (v / 1000000).toFixed(1) + "m";
+const formatActive = (v) => Math.floor(v);
+
+function formatDelta(v, isUp) {
+   const arrow = isUp ? "↑" : "↓";
+   return arrow + " " + v.toFixed(1) + "%";
 }
 
-function animateDonut(fromVal, toVal, fromPct, toPct, dur){
-  const arc = document.getElementById('donutArc');
-  const pctEl = document.getElementById('donutPct');
-  const start = performance.now();
-  function step(now){
-    const p = Math.min((now-start)/dur,1);
-    const e = 1-Math.pow(1-p,3);
-    const v = fromVal + (toVal-fromVal)*e;
-    const pv = Math.round(fromPct + (toPct-fromPct)*e);
-    arc.setAttribute('stroke-dasharray', v+' '+(CIRCUM-v));
-    pctEl.textContent = pv+'%';
-    if(p<1) requestAnimationFrame(step);
-  }
-  requestAnimationFrame(step);
+// ===== MAIN TIMELINE =====
+function runCycle() {
+   const bars = document.querySelectorAll(".bar");
+   const arc = document.getElementById("donutArc");
+   const pctEl = document.getElementById("donutPct");
+   const path = document.getElementById("linePath");
+   const area = document.getElementById("lineArea");
+
+   const kv1 = document.getElementById("kv1");
+   const kv2 = document.getElementById("kv2");
+   const kv3 = document.getElementById("kv3");
+
+   const kd1 = document.getElementById("kd1");
+   const kd2 = document.getElementById("kd2");
+   const kd3 = document.getElementById("kd3");
+
+   // ===== GET REAL PATH LENGTH =====
+   const pathLength = path.getTotalLength();
+
+   // ===== RESET =====
+   bars.forEach((b) => {
+      b.style.transform = "scaleY(0)";
+      b.style.transition = "none";
+   });
+
+   arc.setAttribute("stroke-dasharray", "0 " + CIRCUM);
+   pctEl.textContent = "0%";
+
+   path.style.strokeDasharray = pathLength;
+   path.style.strokeDashoffset = pathLength;
+   path.style.transition = "none";
+
+   area.style.opacity = "0";
+   area.style.transition = "none";
+
+   // ===== TARGET VALUES =====
+   const targets = {
+      revenue: 2600000,
+      refresh: 3100000,
+      active: 903,
+      pct: TARGET_PCT,
+      donut: TARGET_DONUT,
+      d1: 21.0,
+      d2: 96.0,
+      d3: 15.2,
+   };
+
+   const start = performance.now();
+
+   function frame(now) {
+      const t = Math.min((now - start) / DURATION, 1);
+
+      // easeOutCubic
+      const e = 1 - Math.pow(1 - t, 3);
+
+      // ===== BARS =====
+      bars.forEach((b) => {
+         b.style.transform = `scaleY(${e})`;
+      });
+
+      // ===== DONUT =====
+      const dVal = targets.donut * e;
+      arc.setAttribute("stroke-dasharray", dVal + " " + (CIRCUM - dVal));
+      pctEl.textContent = Math.round(targets.pct * e) + "%";
+
+      // ===== LINE =====
+      path.style.strokeDashoffset = pathLength * (1 - e);
+      area.style.opacity = e;
+
+      // ===== KPI VALUES =====
+      kv1.textContent = formatRevenue(targets.revenue * e);
+      kv2.textContent = formatRefresh(targets.refresh * e);
+      kv3.textContent = formatActive(targets.active * e);
+
+      // ===== KPI DELTAS (ANIMATED) =====
+      kd1.textContent = formatDelta(targets.d1 * e, true);
+      kd2.textContent = formatDelta(targets.d2 * e, false);
+      kd3.textContent = formatDelta(targets.d3 * e, true);
+
+      if (t < 1) {
+         requestAnimationFrame(frame);
+      }
+   }
+
+   requestAnimationFrame(frame);
 }
 
-function animateLine(){
-  const path = document.getElementById('linePath');
-  const area = document.getElementById('lineArea');
-  path.style.transition = 'stroke-dashoffset 1.8s ease-out 0.3s';
-  path.style.strokeDashoffset = '0';
-  setTimeout(()=>{
-    area.style.transition = 'opacity 0.8s ease-out';
-    area.style.opacity = '1';
-  }, 1800);
-}
+// ===== INTERSECTION OBSERVER =====
+const dash = document.getElementById("dash");
 
-function runCycle(){
-  const bars = document.querySelectorAll('.bar');
+const observer = new IntersectionObserver(
+   (entries) => {
+      entries.forEach((entry) => {
+         if (entry.isIntersecting) {
+            runCycle();
+         }
+      });
+   },
+   {
+      threshold: 0.5,
+   },
+);
 
-  bars.forEach(b=>{ b.style.transition='none'; b.style.transform='scaleY(0)'; });
-
-  const arc = document.getElementById('donutArc');
-  const path = document.getElementById('linePath');
-  const area = document.getElementById('lineArea');
-
-  arc.setAttribute('stroke-dasharray','0 '+CIRCUM);
-  document.getElementById('donutPct').textContent='0%';
-  path.style.transition='none'; path.style.strokeDashoffset='1000';
-  area.style.transition='none'; area.style.opacity='0';
-
-  requestAnimationFrame(()=>{
-    requestAnimationFrame(()=>{
-      animateBars();
-      setTimeout(()=>animateDonut(0,TARGET_DONUT,0,TARGET_PCT,1400),300);
-      animateLine();
-    });
-  });
-}
-
-runCycle();
-setInterval(runCycle, 3500);
-
-// KPI counter loop
-const kpiData = [
-  {el:'kv1', values:['$1.9M','$2.1M','$2.4M','$2.6M'], delta:['↑ 12.1%','↑ 14.3%','↑ 18.2%','↑ 21.0%'], deltaEl:'kd1'},
-  {el:'kv2', values:['4.2m','3.8m','3.5m','3.1m'],    delta:['↓ 88%','↓ 91%','↓ 93%','↓ 96%'],       deltaEl:'kd2'},
-  {el:'kv3', values:['712','791','847','903'],          delta:['↑ 8.1%','↑ 10.5%','↑ 12.4%','↑ 15.2%'], deltaEl:'kd3'},
-];
-let kpiIdx = 0;
-setInterval(()=>{
-  kpiIdx = (kpiIdx+1) % 4;
-  kpiData.forEach(k=>{
-    const el = document.getElementById(k.el);
-    const de = document.getElementById(k.deltaEl);
-    el.style.animation='none';
-    void el.offsetWidth;
-    el.style.animation='kpiCount 0.4s ease-out';
-    el.textContent = k.values[kpiIdx];
-    de.textContent = k.delta[kpiIdx];
-  });
-}, 5000);
+observer.observe(dash);
