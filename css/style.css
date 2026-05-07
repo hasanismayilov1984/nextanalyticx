@@ -254,6 +254,58 @@ details[open] .faq-q::after {
     box-shadow: 0 0 8px #1d9e75;
 }
 
+.hero-badge {
+    display: inline-flex; align-items: center; gap: 0.55rem;
+    background: var(--surface); border: 1px solid var(--fabric-100); border-radius: 100px;
+    padding: 0.45rem 1.1rem; font-size: 0.78rem; color: var(--text);
+    letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700;
+    margin-bottom: 1.75rem; box-shadow: var(--shadow-sm);
+  }
+
+hero-badge::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--fabric-500);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+        box-shadow: 0 0 0 0 rgba(29, 158, 117, 0.6);
+    }
+
+    50% {
+        opacity: 0.5;
+        box-shadow: 0 0 0 6px rgba(29, 158, 117, 0);
+    }
+}
+
+.dash-dots { display: flex; gap: 5px; }
+  .dash-dot { width: 8px; height: 8px; border-radius: 50%; background: #D4DAE5; }
+
+.dash-dot.live {
+    background: #1D9E75;
+    box-shadow: 0 0 8px #1D9E75;
+    animation: pulseDot 1.8s infinite;
+}
+
+@keyframes pulseDot {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
 /* Donut gradient stroke */
 .donut-gradient-stroke {
     stroke: url(#donutGradStroke);

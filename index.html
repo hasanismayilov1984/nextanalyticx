@@ -69,7 +69,7 @@
          };
       </script>
    </head>
-   <body class="bg-[#FAFBFC] text-[#0A2540] text-base leading-relaxed">
+   <body id="top" class="bg-[#FAFBFC] text-[#0A2540] text-base leading-relaxed">
       <!-- Hidden SVG defs -->
       <svg style="display: none">
          <defs>
@@ -87,7 +87,7 @@
       <!-- NAV -->
       <nav class="fixed top-0 left-0 right-0 z-50 px-4 md:px-[6%] py-3 flex justify-between items-center gap-3 bg-[rgba(232,245,238,0.85)] backdrop-blur-xl border-b border-[#C8EAD8]">
          <!-- LOGO -->
-         <div class="flex items-center h-[32px] md:h-[38px] flex-shrink-0">
+         <a href="#top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' }); return false;" class="flex items-center h-[32px] md:h-[38px] flex-shrink-0 cursor-pointer">
             <svg xmlns="http://www.w3.org/2000/svg" style="height: 100%; width: auto" viewBox="21.93128662109375 92.08378295898437 296.1374267578125 65.83242645263672" preserveAspectRatio="xMidYMid meet">
                <g>
                   <g fill="#0A2540" transform="translate(24.8345947265625,94.98709487915039)">
@@ -119,7 +119,7 @@
                   </g>
                </g>
             </svg>
-         </div>
+         </a>
 
          <!-- DESKTOP MENU -->
          <ul class="hidden md:flex gap-1.5 list-none items-center">
@@ -236,11 +236,12 @@
          <div class="max-w-[1280px] mx-auto w-full grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] gap-16 items-center">
             <!-- Left -->
             <div class="animate-[fadeUp_0.7s_ease_forwards]">
-               <div class="inline-flex items-center gap-2 bg-white border border-[#C8EAD8] rounded-full px-3 py-1.5 md:px-4 md:py-2 text-[0.7rem] md:text-[0.78rem] text-[#0A2540] tracking-[0.1em] uppercase font-bold mb-5 md:mb-7 shadow-sm">
-                  <span class="hero-badge-dot"></span>
-                  Microsoft Fabric · Power BI · AI
+               <div class="inline-flex items-center justify-center gap-2 bg-white border border-[#C8EAD8] rounded-full px-3 py-3 md:px-4 text-[0.7rem] md:text-[0.78rem] leading-none text-[#0A2540] tracking-[0.1em] uppercase font-bold mb-5 md:mb-7 shadow-sm">
+                  <span class="dash-dot live shrink-0" id="liveDot"></span>
+                  <span class="flex items-center leading-none">
+                     Microsoft Fabric · Power BI · AI
+                  </span>
                </div>
-
                <h1 class="text-[clamp(2rem,7vw,3.8rem)] font-extrabold leading-[1.1] tracking-tight text-[#0A2540] mb-4 md:mb-6">
                   Better <span class="hl-pbi">dashboards</span>.<br />
                   Cleaner <span class="hl-fabric">data</span>.<br />
@@ -265,8 +266,7 @@
                <div class="toolbar">
                   <span class="toolbar-title font-mono font-bold underline shadow-sm">Revenue Insights</span>
                   <div class="dots">
-                     <span class="dot"></span><span class="dot"></span>
-                     <span class="live-dot" id="liveDot"></span>
+                     <div class="dash-dots"><span class="dash-dot"></span><span class="dash-dot"></span><span class="dash-dot live"></span></div>
                   </div>
                </div>
 
