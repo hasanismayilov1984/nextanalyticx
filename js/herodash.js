@@ -66,7 +66,7 @@ function runCycle() {
       const t = Math.min((now - start) / DURATION, 1);
 
       // easeOutCubic
-      const e = 1 - Math.pow(1 - t, 3);
+      const e = t;
 
       // ===== BARS =====
       bars.forEach((b) => {

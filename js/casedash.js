@@ -37,10 +37,6 @@ const DURATION2 = 3000;
 let currentView = "after";
 let isAnimating = false;
 
-function easeOutCubic(t) {
-  return 1 - Math.pow(1 - t, 3);
-}
-
 function switchView(view, btn) {
   document.querySelectorAll(".db-tab").forEach(t => t.classList.remove("active"));
   btn.classList.add("active");
@@ -113,7 +109,7 @@ function runAnimation(view) {
 
   function frame(now) {
     const t = Math.min((now - start) / DURATION2, 1);
-    const e = easeOutCubic(t);
+    const e = t;
 
     // Bars
     barEls.forEach(b => {
